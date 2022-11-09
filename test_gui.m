@@ -1,4 +1,4 @@
-function test
+function test_gui
 fig = uifigure('Name','Ozonograma','Position',[350 240 700 420]);
 ax = uiaxes('Parent',fig,'Position',[10 50 500 350], 'Visible','off');
 pnl1 = uipanel(fig, 'Position',[100 200 350 40]);
