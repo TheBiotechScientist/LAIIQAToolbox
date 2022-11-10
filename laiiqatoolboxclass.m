@@ -14,24 +14,36 @@ classdef laiiqatoolboxclass < handle
         xlabel = 'min';
         ylabel = "Concentración [g/L]";
         grid = 'on';
-        legend = '';
+        legend;
+        legendFontSize = 8;
+        legendLocation = 'best';
+        Interpreter = 'tex';
+        plotfig;
+
     end
 
     methods
-        function obj = laiiqatoolbox()
+
+        function obj = laiiqatoolboxclass()
         end
 
         function obj = openfiles(obj)
             clear datacell
             [file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
             if isequal(file,0)
-                disp('No se ha seleccionado ningun archivo.')
+                disp('No seleccionó ningun archivo.');
             else
                 if length(string(file)) == 1
                   file = string(file);
+                  obj.legend = file;
+                else
+                  obj.legend = file;
                 end
-                % for i = 1:length(file)
+                for i = 1:length(file)
                   obj.datacell{i} = importdata(fullfile(pathfile, file{i}));
+                    obj.legend{i} = erase(file{i},'.mat');
+                    obj.legend{i} = string(obj.legend{i});
+                    % obj.legend{i} = replace(lgnd{i},'_','-');
                 end
             end
         end
@@ -53,14 +65,14 @@ classdef laiiqatoolboxclass < handle
                 obj.datacutted{i} = obj.datacutted{i}(:,find(obj.datacutted{i}(2,:)==min(obj.datacutted{i}(2,1:find(obj.datacutted{i}(1,:)==10*60/t)))):end);
                 obj.datacutted{i}(1,:) = obj.datacutted{i}(1,:)-obj.datacutted{i}(1,1);
                 hold(ax,'on');
-                plot(ax, obj.datacutted{i}(1,:),obj.datacutted{i}(2,:));
+                obj.plotfig = plot(ax, obj.datacutted{i}(1,:),obj.datacutted{i}(2,:))
                 title(obj.title);
                 xlabel("Tiempo (" + obj.xlabel + ")");
                 ylabel(obj.ylabel);
                 grid(obj.grid);
-                if obj.legend == ''
+                if isempty(obj.legend)
                 else
-                  legend(obj.legend);
+                  legend(obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.Interpreter);
                 end
                 hold(ax,'off');
             end
