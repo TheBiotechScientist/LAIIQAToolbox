@@ -66,7 +66,7 @@ classdef laiiqatoolboxclass < handle
                 t = 1;
             end
             obj.fig.Visible = 'on';% = figure;
-            obj.ax = axes;% = axes;
+            obj.ax;% = axes;
             for i=1:length(obj.datacutted)
                 obj.datacutted{i}(1,:) = obj.datacutted{i}(1,:)/t;
                 obj.datacutted{i} = obj.datacutted{i}(:,find(obj.datacutted{i}(1,:)==60/t):end);
@@ -84,11 +84,6 @@ classdef laiiqatoolboxclass < handle
                 end
                 hold(obj.ax,'off');
             end
-        end
-
-        function obj = set(obj,title)
-            obj.title = title;
-            obj.plotfiles(obj);
         end
 
         function obj = saveplot(obj,name)
