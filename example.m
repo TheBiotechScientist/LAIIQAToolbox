@@ -1,6 +1,6 @@
-disp('hola mundo')
+disp('hola mundo');
 pwd
-cd('C:\Users\javne\Proyectos\LAIIQAToolbox')
+% cd('C:\Users\javne\Proyectos\LAIIQAToolbox')
 
 
 datacell{1} = importdata('testfiles\4CF001_corrida2_500mL_13082021.mat');
@@ -21,8 +21,21 @@ datacell{1}(1,1:10)
 datacell{1}(1,:) = datacell{1}(1,:)-datacell{1}(1,1);
 
 
+
+clear all
+close all
+clc
+
 [file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
 file
+clear lgnd
+
+for i=1:length(file)
+  lgnd{i} = erase(file{i},'.mat');
+  lgnd{i} = replace(lgnd{i},'_','-');
+end
+lgnd
+
 for i = 1:length(file)
   datacell{i} = importdata(fullfile(pathfile, file{i}));
 end
@@ -49,19 +62,52 @@ for i=1:length(datacell)
 end
 
 
+
+
+nameoffig = 'myfig.pdf'
+
+
+string(nameoffig)
+
+contains(nameoffig,'.pdf')
+
+
+
+
 clear all
 close all
 clc
-
 pwd
-
+%% ====== Utilizando Programación Orientada a Objetos:
+clear cin01
 cin01 = laiiqatoolboxclass
 
-cin01
 cin01.openfiles
 
 cin01.plotfiles
-cin01
 
-cin01.xlabel = 'h'
-cin01.title = 'Hola';
+lgnd = cin01.legend
+for i=1:length(lgnd)
+  lgnd{i} = erase(lgnd{i},'.mat');
+  lgnd{i} = replace(lgnd{i},'_','-')
+end
+
+lgnd
+
+cin01.legend = lgnd
+
+cin01.title = 'Cinética de Ozonización'
+cin01.xlabel = 'min'
+
+
+lgnd = ''
+isempty(lgnd)
+if lgnd == ''
+  disp('Vacío')
+else
+  disp('No vacío')
+end
+
+
+
+% Sincronización Pointer 2001 WolksVagen 1.6L 4Cil
