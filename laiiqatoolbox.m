@@ -8,8 +8,8 @@ classdef laiiqatoolbox < handle
     %   de ESIQIE - IPN.
 
     properties (Access = public)
-        dataraw;
-        datacutted;
+        rawdata;
+        fixeddata;
         title = "Cinética de Ozonización";
         xlabel = 'min';
         ylabel = "Concentración [g/L]";
@@ -33,8 +33,8 @@ classdef laiiqatoolbox < handle
         end
 
         function obj = openfiles(obj)
-            clear obj.dataraw
-            clear obj.datacutted
+            clear obj.rawdata
+            clear obj.fixeddata
             clear obj.legend
             clear file pathfile
             [file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
@@ -48,7 +48,7 @@ classdef laiiqatoolbox < handle
                   obj.legend = file;
                 end
                 for i = 1:length(file)
-                  obj.dataraw{i} = importdata(fullfile(pathfile, file{i}));
+                  obj.rawdata{i} = importdata(fullfile(pathfile, file{i}));
                     obj.legend{i} = erase(file{i},'.mat');
                     obj.legend{i} = string(obj.legend{i});
                     % obj.legend{i} = replace(lgnd{i},'_','-');
@@ -57,7 +57,7 @@ classdef laiiqatoolbox < handle
         end
 
         function obj = plotfiles(obj)
-            obj.datacutted = obj.dataraw;
+            obj.fixeddata = obj.rawdata;
             if obj.xlabel == 'min'
                 t = 60;
             elseif obj.xlabel == 'h'
@@ -67,13 +67,14 @@ classdef laiiqatoolbox < handle
             end
             obj.fig.Visible = 'on';% = figure;
             obj.ax;% = axes;
-            for i=1:length(obj.datacutted)
-                obj.datacutted{i}(1,:) = obj.datacutted{i}(1,:)/t;
-                obj.datacutted{i} = obj.datacutted{i}(:,find(obj.datacutted{i}(1,:)==60/t):end);
-                obj.datacutted{i} = obj.datacutted{i}(:,find(obj.datacutted{i}(2,:)==min(obj.datacutted{i}(2,1:find(obj.datacutted{i}(1,:)==10*60/t)))):end);
-                obj.datacutted{i}(1,:) = obj.datacutted{i}(1,:)-obj.datacutted{i}(1,1);
+            cla(obj.ax);
+            for i=1:length(obj.fixeddata)
+                obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
+                obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
+                obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(2,:)==min(obj.fixeddata{i}(2,1:find(obj.fixeddata{i}(1,:)==10*60/t)))):end);
+                obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
                 hold(obj.ax,'on');
-                obj.plotfig(i) = plot(obj.ax, obj.datacutted{i}(1,:),obj.datacutted{i}(2,:))
+                obj.plotfig(i) = plot(obj.ax, obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:))
                 title(obj.title);
                 xlabel("Tiempo (" + obj.xlabel + ")");
                 ylabel(obj.ylabel);
@@ -88,10 +89,11 @@ classdef laiiqatoolbox < handle
 
         function obj = saveplot(obj,name)
             obj.fig;
+            cla(obj.ax);
             obj.ax;% = axes; % Checar como limpiar la figura
-            for i=1:length(obj.datacutted)
+            for i=1:length(obj.fixeddata)
                 hold(obj.ax,'on');
-                plot(obj.ax,obj.datacutted{i}(1,:),obj.datacutted{i}(2,:));
+                plot(obj.ax,obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:));
                 title(obj.title);
                 xlabel("Tiempo (" + obj.xlabel + ")");
                 ylabel(obj.ylabel);
