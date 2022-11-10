@@ -88,7 +88,7 @@ classdef laiiqatoolboxclass < handle
 
         function obj = saveplot(obj,name)
             obj.fig;
-            obj.ax = axes;% = axes; % Checar como limpiar la figura
+            obj.ax;% = axes; % Checar como limpiar la figura
             hold(obj.ax,'on');
             for i=1:length(obj.datacutted)
                 plot(obj.ax,obj.datacutted{i}(1,:),obj.datacutted{i}(2,:));
