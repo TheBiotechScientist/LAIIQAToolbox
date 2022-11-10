@@ -1,11 +1,14 @@
+disp('hola mundo')
 pwd
 cd('C:\Users\javne\Proyectos\LAIIQAToolbox')
+
 
 datacell{1} = importdata('testfiles\4CF001_corrida2_500mL_13082021.mat');
 
 datacell
 
 datacell{2} = importdata('testfiles\4CF002_corrida1_500mL_01092021.mat');
+
 
 length(datacell{1}(1,:))
 
@@ -50,12 +53,14 @@ clear all
 close all
 clc
 
+pwd
+
 cin01 = laiiqatoolboxclass
 
 cin01
 cin01.openfiles
 
-
+cin01.plotfiles
 cin01
 
 cin01.xlabel = 'h'
