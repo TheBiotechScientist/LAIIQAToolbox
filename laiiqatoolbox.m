@@ -66,8 +66,8 @@ classdef laiiqatoolbox < handle
                 t = 1;
             end
             obj.fig.Visible = 'on';% = figure;
-            obj.ax;% = axes;
             cla(obj.ax);
+            obj.ax;% = axes;
             for i=1:length(obj.fixeddata)
                 obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
                 obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
