@@ -27,7 +27,7 @@ gridonoff = 'on';
 
 %% === Seleccionamos los archivos a graficar:
 [file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
-if isempty(file)
+if isequal(file,0)
     disp("No se seleccionaron archivos");
 else
     if length(string(file)) == 1
