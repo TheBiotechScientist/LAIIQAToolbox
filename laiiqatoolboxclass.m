@@ -58,7 +58,10 @@ classdef laiiqatoolboxclass < handle
                 xlabel("Tiempo (" + obj.xlabel + ")");
                 ylabel(obj.ylabel);
                 grid(obj.grid);
-                legend(obj.legend);
+                if obj.legend == ''
+                else
+                  legend(obj.legend);
+                end
                 hold(ax,'off');
             end
         end
