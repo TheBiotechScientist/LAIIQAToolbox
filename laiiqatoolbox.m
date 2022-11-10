@@ -1,4 +1,4 @@
-classdef laiiqatoolbox < handle
+classdef laiiqatoolbox
     %% LAIIQATOOLBOX script v0.1
     %   Autor: F. Javier Morales Mtz.
     %   05/11/2022
@@ -24,7 +24,7 @@ classdef laiiqatoolbox < handle
     properties (Access = private)
         plotfig;
         fig = figure('visible','off');
-        ax = handle(axes);
+        ax = axes;
     end
 
     methods
