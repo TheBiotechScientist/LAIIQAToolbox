@@ -1,4 +1,4 @@
-classdef laiiqatoolbox
+classdef laiiqatoolbox < handle
     %% LAIIQATOOLBOX script v0.1
     %   Autor: F. Javier Morales Mtz.
     %   05/11/2022
@@ -23,8 +23,8 @@ classdef laiiqatoolbox
 
     properties (Access = private)
         plotfig;
-        fig = figure('visible','off');
-        ax = axes;
+        fig;% = figure('visible','off');
+        ax;% = axes;
     end
 
     methods
@@ -65,9 +65,10 @@ classdef laiiqatoolbox
             elseif obj.xlabel == 'seg'
                 t = 1;
             end
-            obj.fig.Visible = 'on';% = figure;
+            % obj.fig.Visible = 'on';% = figure;
+            obj.fig = figure;
+            obj.ax = axes;
             cla(obj.ax);
-            obj.ax;% = axes;
             for i=1:length(obj.fixeddata)
                 obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
                 obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
