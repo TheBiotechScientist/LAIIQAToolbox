@@ -14,6 +14,7 @@ classdef laiiqatoolbox < handle
         xlabel = 'min';
         ylabel = "Concentración [g/L]";
         grid = 'on';
+        LineWidth = 0.5;
         legend;
         legendFontSize = 8;
         legendLocation = 'best';
@@ -30,6 +31,8 @@ classdef laiiqatoolbox < handle
     methods
 
         function obj = laiiqatoolbox()
+            obj.fig = figure('Visible', 'off');
+            obj.ax = axes;
         end
 
         function obj = openfiles(obj)
@@ -43,14 +46,16 @@ classdef laiiqatoolbox < handle
             else
                 if length(string(file)) == 1
                   file = string(file);
-                  obj.legend = file;
+                  obj.legend = string(file);
+                  obj.legend = erase(file,".mat");
                 else
-                  obj.legend = file;
+                    for i=1:length(file)
+                        obj.legend{i} = erase(file{i},'.mat');
+                        obj.legend{i} = string(obj.legend{i});
+                    end
                 end
                 for i = 1:length(file)
                   obj.rawdata{i} = importdata(fullfile(pathfile, file{i}));
-                    obj.legend{i} = erase(file{i},'.mat');
-                    obj.legend{i} = string(obj.legend{i});
                     % obj.legend{i} = replace(lgnd{i},'_','-');
                 end
             end
@@ -66,8 +71,8 @@ classdef laiiqatoolbox < handle
                 t = 1;
             end
             % obj.fig.Visible = 'on';% = figure;
-            obj.fig = figure;
-            obj.ax = axes;
+            obj.fig.Visible = 'on'; % = figure;
+            obj.ax; % = axes;
             cla(obj.ax);
             for i=1:length(obj.fixeddata)
                 obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
@@ -75,12 +80,13 @@ classdef laiiqatoolbox < handle
                 obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(2,:)==min(obj.fixeddata{i}(2,1:find(obj.fixeddata{i}(1,:)==10*60/t)))):end);
                 obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
                 hold(obj.ax,'on');
-                obj.plotfig(i) = plot(obj.ax, obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:))
+                obj.plotfig = plot(obj.ax, obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:), 'LineWidth', obj.LineWidth);
                 title(obj.title);
                 xlabel("Tiempo (" + obj.xlabel + ")");
                 ylabel(obj.ylabel);
                 grid(obj.grid);
                 if isempty(obj.legend)
+
                 else
                   legend(obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.Interpreter);
                 end
