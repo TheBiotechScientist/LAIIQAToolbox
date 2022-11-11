@@ -1,8 +1,8 @@
 classdef laiiqatoolbox < handle
-    %% LAIIQATOOLBOX script v0.1
+    %% LAIIQATOOLBOX script v1.0
     %   Autor: F. Javier Morales Mtz.
     %   05/11/2022
-    %   Programa para dar tratamiento y graficar los archivos
+    %   Programa para ajustar y graficar los datos de los archivos
     %   generados del proceso de ozonización en el Laboratorio
     %   de Investigación en Ingeniería Química Ambiental (LAIIQA)
     %   de ESIQIE - IPN.
