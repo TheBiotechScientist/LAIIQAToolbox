@@ -1,10 +1,10 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="2929171972" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="1302523700" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>LAIIQAToolbox</param.appname>
     <param.authnamewatermark>Francisco Javier Morales Martínez</param.authnamewatermark>
     <param.email>fmoralesm87@gmail.com</param.email>
     <param.company>TheBiotechScientist</param.company>
-    <param.summary>Programa para graficar archivos .mat de la ozonización.</param.summary>
+    <param.summary>Programa para graficar archivos .mat del proceso de ozonización. LAIIQA - ESIQIE - IPN.</param.summary>
     <param.description>Programa para ajustar y graficar los datos de los archivos generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
     <param.screenshot>${PROJECT_ROOT}\splash.png</param.screenshot>
     <param.version>1.1</param.version>
