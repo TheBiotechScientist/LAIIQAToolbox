@@ -1,13 +1,13 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
   <configuration build-checksum="2929171972" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>LAIIQAToolbox</param.appname>
-    <param.authnamewatermark>F Javier Morales Mtz.</param.authnamewatermark>
+    <param.authnamewatermark>Francisco Javier Morales Martínez</param.authnamewatermark>
     <param.email>fmoralesm87@gmail.com</param.email>
-    <param.company />
+    <param.company>TheBiotechScientist</param.company>
     <param.summary>Programa para graficar archivos .mat de la ozonización.</param.summary>
-    <param.description>Programa recortar y graficar los archivos .mat generados del proceso de ozonización desde un tiempo de concentración inicial cero. Para el laboratorio LAIIQA de ESIQIE - IPN.</param.description>
+    <param.description>Programa para ajustar y graficar los datos de los archivos generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
     <param.screenshot>${PROJECT_ROOT}\splash.png</param.screenshot>
-    <param.version>0.1</param.version>
+    <param.version>1.1</param.version>
     <param.output>${PROJECT_ROOT}\LAIIQAToolbox.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -38,7 +38,10 @@
 %
 % All files matching a pattern in all subfolders of the toolbox folder:
 % **/*.bak
-splash.svg</param.exclude.filters>
+splash.svg
+.git
+.gitignore
+example.m</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples />
     <param.demosxml />
@@ -66,9 +69,7 @@ splash.svg</param.exclude.filters>
     <param.additional.sw.mac.url />
     <param.additional.sw.linux.url />
     <unset>
-      <param.authnamewatermark />
       <param.email />
-      <param.company />
       <param.output />
       <param.platforms />
       <param.exclude.pcodedmfiles />
@@ -98,7 +99,6 @@ splash.svg</param.exclude.filters>
       <file>${PROJECT_ROOT}</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>${PROJECT_ROOT}\.git</file>
       <file>${PROJECT_ROOT}\doc</file>
       <file>${PROJECT_ROOT}\info.xml</file>
       <file>${PROJECT_ROOT}\laiiqatoolbox.m</file>
