@@ -13,6 +13,7 @@ classdef laiiqatoolbox < handle
         title; % = "Cinética de Ozonización";
         titleInterpreter;
         xlabel; % = 'min';
+        xf; % valor de x final
         ylabel; % = "Concentración [g/L]";
         labelInterpreter;
         grid; % = 'on';
@@ -40,11 +41,12 @@ classdef laiiqatoolbox < handle
             obj.title = "Cinética de Ozonización";
             obj.titleInterpreter = 'tex';
             obj.xlabel = 'min';
+            obj.xf = {'end'};
             obj.ylabel = "Concentración [g/L]";
             obj.labelInterpreter = 'tex';
             obj.grid = 'on';
             obj.LineWidth = 0.5;
-            obj.legend = {};
+            obj.legend = {'default'};
             obj.legendFontSize = 8;
             obj.legendLocation = 'best';
             obj.legendInterpreter = 'tex';
@@ -60,15 +62,18 @@ classdef laiiqatoolbox < handle
             clear obj.ozoneresults
             [obj.file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
             if isequal(obj.file,0)
-                disp('No seleccionó ningun archivo.');
+                disp('No se seleccionó ningun archivo.');
             else
+                % obj.legend = {};
                 if length(string(obj.file)) == 1
                   obj.file = string(obj.file);
                   obj.legend{1} = erase(obj.file,".mat");
+                  obj.xf{1} = 'end';
                 else
                     for i=1:length(obj.file)
                         obj.legend{i} = erase(obj.file{i},'.mat');
                         obj.legend{i} = string(obj.legend{i});
+                        obj.xf{i} = 'end';
                     end
                 end
                 if isequal(obj.legendInterpreter,'latex')
@@ -92,6 +97,20 @@ classdef laiiqatoolbox < handle
             elseif obj.xlabel == 'seg'
                 t = 1;
             end
+
+            if isequal(obj.legend,'default')
+                % obj.legend = {};
+                if length(string(obj.file)) == 1
+                  obj.file = string(obj.file);
+                  obj.legend{1} = erase(obj.file,".mat");
+                else
+                    for i=1:length(obj.file)
+                        obj.legend{i} = erase(obj.file{i},'.mat');
+                        obj.legend{i} = string(obj.legend{i});
+                    end
+                end
+            end
+
             obj.fig.Visible = 'on';
             obj.ax; % = axes;
             cla(obj.ax);
@@ -100,6 +119,10 @@ classdef laiiqatoolbox < handle
                 obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
                 obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
                 obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(2,:)==min(obj.fixeddata{i}(2,1:find(obj.fixeddata{i}(1,:)==10*60/t)))):end);
+                if isequal(obj.xf{i},'end') | isequal(obj.xf{i},0)
+                else
+                    obj.fixeddata{i} = obj.fixeddata{i}(:,1:find(obj.fixeddata{i}(1,:)==obj.xf{i}));
+                end
                 obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
                 plot(obj.ax, obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:), 'LineWidth', obj.LineWidth);
             end
@@ -172,7 +195,7 @@ classdef laiiqatoolbox < handle
                         var(3) = total;
                         disp("Para " + obj.file{i} + ":");
                         for j=1:length(ozonevars)
-                          disp("    " + ozonevars(j) + ": " + var(j) + obj.ozoneUnits);
+                          disp("    " + ozonevars(j) + ": " + var(j) + " " + string(obj.ozoneUnits));
                           obj.ozoneresults{i,j} = {ozonevars(j), var(j)};
                         end
                         disp(newline);
