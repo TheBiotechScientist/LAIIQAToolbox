@@ -11,26 +11,27 @@ classdef laiiqatoolbox < handle
         rawdata;
         fixeddata;
         title; % = "Cinética de Ozonización";
-        titleInterpreter;
         xlabel; % = 'min';
         xf; % valor de x final
         ylabel; % = "Concentración [g/L]";
-        labelInterpreter;
         grid; % = 'on';
         LineWidth; % = 0.5;
         legend; % = '';
         legendFontSize; % = 8;
         legendLocation; % = 'best';
-        legendInterpreter; % = 'tex';
         imageResolution; % = 300;
-        ozoneresults;
+        titleInterpreter;
+        labelInterpreter;
+        legendInterpreter; % = 'tex';
         ozoneUnits;
+        ozoneresults;
     end
 
     properties (Access = private)
         fig;% = figure('visible','off');
         ax;% = axes;
         file;
+        defaultlegend;
     end
 
     methods
@@ -39,18 +40,19 @@ classdef laiiqatoolbox < handle
             obj.fig = figure('Visible', 'off');
             obj.ax = axes;
             obj.title = "Cinética de Ozonización";
-            obj.titleInterpreter = 'tex';
             obj.xlabel = 'min';
             obj.xf = {'end'};
             obj.ylabel = "Concentración [g/L]";
-            obj.labelInterpreter = 'tex';
             obj.grid = 'on';
             obj.LineWidth = 0.5;
             obj.legend = {'default'};
             obj.legendFontSize = 8;
             obj.legendLocation = 'best';
-            obj.legendInterpreter = 'tex';
             obj.imageResolution = 300;
+            obj.defaultlegend = {};
+            obj.titleInterpreter = 'tex';
+            obj.labelInterpreter = 'tex';
+            obj.legendInterpreter = 'tex';
             obj.ozoneUnits = 'g/L';
         end
 
@@ -58,30 +60,34 @@ classdef laiiqatoolbox < handle
             clear obj.rawdata
             clear obj.fixeddata
             clear obj.legend
-            clear obj.file pathfile
+            clear obj.file
+            clear pathfile
             clear obj.ozoneresults
+            clear onj.defaultlegend
+
             [obj.file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
+
             if isequal(obj.file,0)
                 disp('No se seleccionó ningun archivo.');
             else
-                % obj.legend = {};
                 if length(string(obj.file)) == 1
-                  obj.file = string(obj.file);
-                  obj.legend{1} = erase(obj.file,".mat");
-                  obj.xf{1} = 'end';
-                else
+                  % obj.file = string(obj.file);
+                  obj.defaultlegend{1} = string(erase(obj.file,".mat"));
+                  % obj.xf{1} = 'end';
+                elseif length(string(obj.file)) > 1
                     for i=1:length(obj.file)
-                        obj.legend{i} = erase(obj.file{i},'.mat');
-                        obj.legend{i} = string(obj.legend{i});
+                        % obj.file = string(obj.file);
+                        obj.defaultlegend{i} = string(erase(obj.file{i},".mat"));
+                        % obj.defaultlegend{i} = string(obj.defaultlegend{i});
                         obj.xf{i} = 'end';
                     end
                 end
                 if isequal(obj.legendInterpreter,'latex')
-                    for i=1:length(obj.legend)
-                        obj.legend{i} = "$"+obj.legend{i}+"$";
+                    for i=1:length(obj.defaultlegend)
+                        obj.defaultlegend{i} = "$"+obj.defaultlegend{i}+"$";
                     end
                 end
-                for i = 1:length(obj.file)
+                for i=1:length(obj.file)
                   obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
                     % obj.legend{i} = replace(lgnd{i},'_','-');
                 end
@@ -90,52 +96,49 @@ classdef laiiqatoolbox < handle
 
         function obj = plotfiles(obj)
             obj.fixeddata = obj.rawdata;
-            if obj.xlabel == 'min'
-                t = 60;
-            elseif obj.xlabel == 'h'
-                t = 3600;
-            elseif obj.xlabel == 'seg'
-                t = 1;
-            end
-
-            if isequal(obj.legend,'default')
-                % obj.legend = {};
-                if length(string(obj.file)) == 1
-                  obj.file = string(obj.file);
-                  obj.legend{1} = erase(obj.file,".mat");
-                else
-                    for i=1:length(obj.file)
-                        obj.legend{i} = erase(obj.file{i},'.mat');
-                        obj.legend{i} = string(obj.legend{i});
-                    end
-                end
-            end
-
-            obj.fig.Visible = 'on';
-            obj.ax; % = axes;
-            cla(obj.ax);
-            hold(obj.ax,'on');
-            for i=1:length(obj.fixeddata)
-                obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
-                obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
-                obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(2,:)==min(obj.fixeddata{i}(2,1:find(obj.fixeddata{i}(1,:)==10*60/t)))):end);
-                if isequal(obj.xf{i},'end') | isequal(obj.xf{i},0)
-                else
-                    obj.fixeddata{i} = obj.fixeddata{i}(:,1:find(obj.fixeddata{i}(1,:)==obj.xf{i}));
-                end
-                obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
-                plot(obj.ax, obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:), 'LineWidth', obj.LineWidth);
-            end
-            hold(obj.ax,'off');
-            title(obj.title, 'Interpreter', obj.titleInterpreter);
-            xlabel("Tiempo (" + obj.xlabel + ")",'Interpreter',obj.labelInterpreter);
-            ylabel(obj.ylabel,'Interpreter',obj.labelInterpreter);
-            grid(obj.grid);
-            if isempty(obj.legend)
-                legend(obj.ax,'off');
+            if isempty(obj.fixeddata)
+                disp("No se han cargado archivos para graficar. Ejecute openfiles primero.");
             else
-                legend(obj.ax,'on');
-                legend(obj.ax,obj.legend, 'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
+                if obj.xlabel == 'min'
+                    t = 60;
+                elseif obj.xlabel == 'h'
+                    t = 3600;
+                elseif obj.xlabel == 'seg'
+                    t = 1;
+                end
+
+                if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend)
+                    obj.legend = obj.defaultlegend;
+                end
+
+                obj.fig.Visible = 'on';
+                obj.ax; % = axes;
+                cla(obj.ax);
+                hold(obj.ax,'on');
+                for i=1:length(obj.fixeddata)
+                    obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
+                    obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
+                    obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(2,:)==min(obj.fixeddata{i}(2,1:find(obj.fixeddata{i}(1,:)==10*60/t)))):end);
+                    obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
+                    obj.fixeddata{i}(1,:) = round(obj.fixeddata{i}(1,:),4);
+                    if isequal(obj.xf{i},'end')
+                        obj.fixeddata{i} = obj.fixeddata{i}(:,1:end);
+                    else
+                        obj.fixeddata{i} = obj.fixeddata{i}(:,1:find(obj.fixeddata{i}(1,:)==obj.xf{i}));
+                    end
+                    plot(obj.ax, obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:), 'LineWidth', obj.LineWidth);
+                end
+                hold(obj.ax,'off');
+                title(obj.title, 'Interpreter', obj.titleInterpreter);
+                xlabel("Tiempo (" + obj.xlabel + ")",'Interpreter',obj.labelInterpreter);
+                ylabel(obj.ylabel,'Interpreter',obj.labelInterpreter);
+                grid(obj.grid);
+                if isempty(obj.legend)
+                    legend(obj.ax,'off');
+                else
+                    legend(obj.ax,'on');
+                    legend(obj.ax,obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
+                end
             end
         end
 
@@ -173,7 +176,7 @@ classdef laiiqatoolbox < handle
 
         function obj = ozonecalc(obj)
             if isempty(obj.fixeddata)
-                disp('Variable fixeddata vacía. Ejecute plotfiles primero');
+                disp('Variable fixeddata vacía. Ejecute plotfiles primero.');
             else
                 ozonevars = ["Consumido","Residual","Total"];
                 if isequal(obj.ozoneUnits,'g/L')
@@ -193,7 +196,11 @@ classdef laiiqatoolbox < handle
                         var(1) = residual;
                         var(2) = consumed;
                         var(3) = total;
-                        disp("Para " + obj.file{i} + ":");
+                        if contains(obj.legend,'default')
+                            disp("Para " + obj.defaultlegend{i} + ":");
+                        else
+                            disp("Para " + obj.legend{i} + ":");
+                        end
                         for j=1:length(ozonevars)
                           disp("    " + ozonevars(j) + ": " + var(j) + " " + string(obj.ozoneUnits));
                           obj.ozoneresults{i,j} = {ozonevars(j), var(j)};
