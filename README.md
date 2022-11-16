@@ -11,7 +11,7 @@ Matlab&reg; **toolbox** para ajustar y graficar los datos de los archivos `.mat`
 
 
 ## Requerimientos de Sistema
-Matlab >= R2019.
+Matlab $>=$ R2019.
 
 
 ## Instalación
@@ -23,9 +23,9 @@ Desde **Add-Ons** en la pestaña **Home**, buscar como **laiiqatoolbox**.
 
    -  Programación orientada a objetos.
    -  Grafica datos ajustados (recortados) a una concentración inicial cero (o cercana).
-   -  Acceso a propiedades de grafico: titulo, etiquetas de ejes *x* y *y, *legenda, tamaño, etc.
-   -  Conversión de datos de tiempo del eje *x: *seg, min, h.
-   -  Multiselección de archivos para grafcar.
+   -  Acceso a propiedades de grafico: titulo, etiquetas de ejes *x* y *y*, leyenda, grosor de línea, etc.
+   -  Conversión de datos de tiempo del eje *x*: seg, min, h.
+   -  Multiselección de archivos para graficar.
    -  Acceso a variables de datos crudos (`rawdata`) y ajustados (`fixeddata`).
    -  Calculo de consumo de ozono.
    -  Acceso a variables de consumo de ozono (`ozoneresults`).
