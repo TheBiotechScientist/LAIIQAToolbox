@@ -4,7 +4,7 @@
 
 ## Descripción
 
-Programa para ajustar y graficar los datos de los archivos `.mat` generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.
+Matlab&reg; **toolbox** para ajustar y graficar los datos de los archivos `.mat` generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.
 
 
 ![image_0.png](doc/GettingStarted_images/image_0.png)
