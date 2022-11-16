@@ -1,11 +1,11 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="1302523700" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="2847835131" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>LAIIQAToolbox</param.appname>
     <param.authnamewatermark>Francisco Javier Morales Martínez</param.authnamewatermark>
     <param.email>fmoralesm87@gmail.com</param.email>
     <param.company>TheBiotechScientist</param.company>
     <param.summary>Programa para graficar archivos .mat del proceso de ozonización. LAIIQA - ESIQIE - IPN.</param.summary>
-    <param.description>Programa para ajustar y graficar los datos de los archivos generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
+    <param.description>Programa para ajustar y graficar los datos de los archivos .mat generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
     <param.screenshot>${PROJECT_ROOT}\splash.png</param.screenshot>
     <param.version>1.1</param.version>
     <param.output>${PROJECT_ROOT}\LAIIQAToolbox.mltbx</param.output>
@@ -43,7 +43,16 @@ splash.svg
 .gitignore
 example.m</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
-    <param.examples />
+    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;examples&gt;
+   &lt;exampleCategory name="doc"&gt;
+      &lt;example name="GettingStarted" type="html"&gt;
+         &lt;file type="source"&gt;/doc/html/GettingStarted.html&lt;/file&gt;
+         &lt;file type="main"&gt;/doc/GettingStarted.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+&lt;/examples&gt;</param.examples>
     <param.demosxml />
     <param.apps />
     <param.registered.apps />
@@ -69,11 +78,12 @@ example.m</param.exclude.filters>
     <param.additional.sw.mac.url />
     <param.additional.sw.linux.url />
     <unset>
+      <param.authnamewatermark />
       <param.email />
+      <param.company />
       <param.output />
       <param.platforms />
       <param.exclude.pcodedmfiles />
-      <param.examples />
       <param.demosxml />
       <param.apps />
       <param.registered.apps />
@@ -99,7 +109,9 @@ example.m</param.exclude.filters>
       <file>${PROJECT_ROOT}</file>
     </fileset.rootdir>
     <fileset.rootfiles>
+      <file>${PROJECT_ROOT}\demos.xml</file>
       <file>${PROJECT_ROOT}\doc</file>
+      <file>${PROJECT_ROOT}\examplefig1.png</file>
       <file>${PROJECT_ROOT}\info.xml</file>
       <file>${PROJECT_ROOT}\laiiqatoolbox.m</file>
       <file>${PROJECT_ROOT}\splash.png</file>
