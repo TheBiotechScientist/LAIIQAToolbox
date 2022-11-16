@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="2053461664" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="4116727504" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>LAIIQAToolbox</param.appname>
     <param.authnamewatermark>Francisco Javier Morales Martínez</param.authnamewatermark>
     <param.email>fmoralesm87@gmail.com</param.email>
@@ -41,18 +41,10 @@
 splash.svg
 .git
 .gitignore
-example.m</param.exclude.filters>
+example.m
+README.md</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
-    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;examples&gt;
-   &lt;exampleCategory name="doc"&gt;
-      &lt;example name="GettingStarted" type="html"&gt;
-         &lt;file type="source"&gt;/doc/html/GettingStarted.html&lt;/file&gt;
-         &lt;file type="main"&gt;/doc/GettingStarted.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
-      &lt;/example&gt;
-   &lt;/exampleCategory&gt;
-&lt;/examples&gt;</param.examples>
+    <param.examples />
     <param.demosxml />
     <param.apps />
     <param.registered.apps />
@@ -84,6 +76,7 @@ example.m</param.exclude.filters>
       <param.output />
       <param.platforms />
       <param.exclude.pcodedmfiles />
+      <param.examples />
       <param.demosxml />
       <param.apps />
       <param.registered.apps />
@@ -114,7 +107,6 @@ example.m</param.exclude.filters>
       <file>${PROJECT_ROOT}\examplefig1.png</file>
       <file>${PROJECT_ROOT}\info.xml</file>
       <file>${PROJECT_ROOT}\laiiqatoolbox.m</file>
-      <file>${PROJECT_ROOT}\README.md</file>
       <file>${PROJECT_ROOT}\splash.png</file>
       <file>${PROJECT_ROOT}\testfiles</file>
     </fileset.rootfiles>
