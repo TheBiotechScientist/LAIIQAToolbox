@@ -1,6 +1,7 @@
 # LAIIQAToolbox
 ### v1.1
 
+
 ## Descripción
 
 Programa para ajustar y graficar los datos de los archivos `.mat` generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.
@@ -18,7 +19,7 @@ Matlab >= R2019.
 Desde **Add-Ons** en la pestaña **Home**, buscar como **laiiqatoolbox**.
 
 
-## Caracteristicas
+## Características
 
    -  Programación orientada a objetos.
    -  Grafica datos ajustados (recortados) a una concentración inicial cero (o cercana).
@@ -33,30 +34,30 @@ Desde **Add-Ons** en la pestaña **Home**, buscar como **laiiqatoolbox**.
 
 ## Propiedades del objeto `laiiqatoolbox`
 
-   -  `rawdata: `Datos "crudos", sin tratamiento que contiene las filas de tiempo y concentración de ozono del archivo `.mat`.
-   -  `fixeddata: `Datos "ajustados", recortados para quitar los primeros datos de estabilización de la concentración de ozono y para comenzar el ozonograma desde una concentración igual o cercana a cero.
-   -  `title: `Modifica o quita el titulo del gráfico.
-   -  `xlabel: `Modifica los datos de tiempo. Opciones: `'seg'|` `'min'|` `'h'`.
-   \item{ `xf: `Establece el valor de *x* final para cada linea de datos. Ociones: `'end'` para restaurar a todos los valores | cualquier valor positivo de tiempo. Ejemplo: `miobjeto.xf = { 28 'end' 45 'end' ...etc }`. }
-   -  `ylabel: `Cambia el titulo del eje *y*.
-   -  `grid: `Activa o desactiva las rejillas del gráfico. Opciones: `'on'|` `'off'`.
-   -  `LineWidth: `Cambia el grosor de linea para todas las lineas de datos.
-   \item{ `legend: `Cambia o quita la legenda para cada linea de datos. Opciones 'default' pone de leyenda los nombres de archivos abiertos | `{` "<nombre de leyenda 1>"  "<nombre de leyenda 2>"`  ...etc }`. Ejemplo: `{'default'} `ó `{"Linea 1" "Linea 2" "Linea 3" ...etc }`. }
-   -  `legendFontSize: `Cambia el tamaño de letra de todas las leyenda.
-   -  `legendLocation: `Ubicación de la leyenda en el gráfico. Opciones:  `'south'` | `'east'` | `'west'` | `'northeast'` | `...etc`. Ver documentación para más opciones.
-   -  `imageResolution: `Cambia la resolución de los formatos de imgen al guardar con el método `saveplot()`.
-   -  `titleInterpreter: `Interprete utilizado para el renderizado del titulo. Opciones: `'tex' (default) | 'latex'`.
-   -  `labelInterpreter: `Interprete utilizado para el renderizado del titulo de los ejes. Opciones: `'tex' (default) | 'latex'`.
-   -  `legendInterpreter: `Interprete utilizado para el renderizado de las leyedas. Opciones: `'tex' (default) | 'latex'`.
-   -  `ozoneUnits: `Unidades utilizadas para el cálculo del consumo de ozono.
-   -  `ozoneresults: `Variable que almacena los calculos del consumo de ozono.
+   -  `rawdata` : Datos "crudos", sin tratamiento que contiene las filas de tiempo y concentración de ozono del archivo `.mat`.
+   -  `fixeddata` : Datos "ajustados", recortados para quitar los primeros datos de estabilización de la concentración de ozono y para comenzar el ozonograma desde una concentración igual o cercana a cero.
+   -  `title` : Modifica o quita el titulo del gráfico.
+   -  `xlabel` : Modifica los datos de tiempo. Opciones: `'seg'` | `'min'` | `'h'`.
+   - `xf` : Establece el valor de *x* final para cada linea de datos. Ociones: `'end'` (para restaurar a todos los valores) | `<valor numerico>` (cualquier valor positivo de tiempo). Ejemplo: `miobjeto.xf = { 28 'end' 45 'end' ...etc }`.
+   -  `ylabel` : Cambia el titulo del eje *y*.
+   -  `grid` : Activa o desactiva las rejillas del gráfico. Opciones: `'on'` | `'off'`.
+   - `LineWidth` : Cambia el grosor de linea para todas las lineas de datos.
+   - `legend` : Cambia o quita la legenda para cada linea de datos. Opciones: `'default'` (pone de leyenda los nombres de archivos abiertos) | `{"<nombre de leyenda 1>"  "<nombre de leyenda 2>" ...etc }`. Ejemplo: `{'default'}` ó `{"Linea 1" "Linea 2" "Linea 3" ...etc }`.
+   - `legendFontSize` : Cambia el tamaño de letra de todas las leyenda.
+   - `legendLocation` : Ubicación de la leyenda en el gráfico. Opciones:  `'south'` | `'east'` | `'west'` | `'northeast'` | `...etc`. Ver [documentación](https://la.mathworks.com/help/matlab/ref/matlab.graphics.illustration.legend-properties.html) para más opciones.
+   - `imageResolution` : Cambia la resolución de los formatos de imgen al guardar con el método `saveplot()`.
+   -  `titleInterpreter  :`Interprete utilizado para el renderizado del titulo. Opciones: `'tex'` (default) | `'latex'`.
+   -  `labelInterpreter  :`Interprete utilizado para el renderizado del titulo de los ejes. Opciones: `'tex'` (default) | `'latex'`.
+   -  `legendInterpreter  :`Interprete utilizado para el renderizado de las leyedas. Opciones: `'tex'` (default) | `'latex'`.
+   -  `ozoneUnits` : Unidades utilizadas para el cálculo del consumo de ozono.
+   -  `ozoneresults` : Variable que almacena los calculos del consumo de ozono.
 
 ## Métodos del objeto `laiiqatoolbox`
 
-   -  `openfiles: `Abre una ventana de dialogo para selececionar los archivos a graficar.
-   -  `plotfiles: P`rocesa los archivos seleccionados y crea el objeto gráfico.
-   -  `saveplot: `Guarda el objeto gráfico con el nombre y formato especificado. Ejemplo: `saveplot('nombre.pdf')`.
-   -  `ozonecalc: `Procesa los datos de cada archivo y calcula el ozono consumido, residual y total.
+   -  `openfiles` : Abre una ventana de dialogo para selececionar los archivos a graficar.
+   -  `plotfiles` : Procesa los archivos seleccionados y crea el objeto gráfico.
+   -  `saveplot` : Guarda el objeto gráfico con el nombre y formato especificado. Ejemplo: `saveplot('nombre.pdf')`.
+   -  `ozonecalc` : Procesa los datos de cada archivo y calcula el ozono consumido, residual y total.
 
 # Ejemplos
 ## Creación del objeto
