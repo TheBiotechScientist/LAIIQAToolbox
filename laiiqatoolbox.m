@@ -1,8 +1,8 @@
 classdef laiiqatoolbox < handle
-    %% LAIIQATOOLBOX script v1.1
+    %% LAIIQATOOLBOX script v1.1.1
     %   Autor: F. Javier Morales Mtz.
     %   05/11/2022
-    %   Programa para ajustar y graficar los datos de los archivos
+    %   Matlab toolbox para ajustar y graficar los datos de los archivos
     %   generados del proceso de ozonización en el Laboratorio
     %   de Investigación en Ingeniería Química Ambiental (LAIIQA)
     %   de ESIQIE - IPN.
