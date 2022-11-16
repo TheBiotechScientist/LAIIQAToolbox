@@ -196,7 +196,7 @@ classdef laiiqatoolbox < handle
                         var(1) = residual;
                         var(2) = consumed;
                         var(3) = total;
-                        if contains(obj.legend,'default')
+                        if isequal(obj.legend,{'default'})
                             disp("Para " + obj.defaultlegend{i} + ":");
                         else
                             disp("Para " + obj.legend{i} + ":");
