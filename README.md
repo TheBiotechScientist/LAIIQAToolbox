@@ -46,9 +46,9 @@ Desde **Add-Ons** en la pestaña **Home**, buscar como **laiiqatoolbox**.
    - `legendFontSize` : Cambia el tamaño de letra de todas las leyenda.
    - `legendLocation` : Ubicación de la leyenda en el gráfico. Opciones:  `'south'` | `'east'` | `'west'` | `'northeast'` | `...etc`. Ver [documentación](https://la.mathworks.com/help/matlab/ref/matlab.graphics.illustration.legend-properties.html) para más opciones.
    - `imageResolution` : Cambia la resolución de los formatos de imgen al guardar con el método `saveplot()`.
-   -  `titleInterpreter  :`Interprete utilizado para el renderizado del titulo. Opciones: `'tex'` (default) | `'latex'`.
-   -  `labelInterpreter  :`Interprete utilizado para el renderizado del titulo de los ejes. Opciones: `'tex'` (default) | `'latex'`.
-   -  `legendInterpreter  :`Interprete utilizado para el renderizado de las leyedas. Opciones: `'tex'` (default) | `'latex'`.
+   -  `titleInterpreter` : Interprete utilizado para el renderizado del titulo. Opciones: `'tex'` (default) | `'latex'`.
+   -  `labelInterpreter` : Interprete utilizado para el renderizado del titulo de los ejes. Opciones: `'tex'` (default) | `'latex'`.
+   -  `legendInterpreter` : Interprete utilizado para el renderizado de las leyedas. Opciones: `'tex'` (default) | `'latex'`.
    -  `ozoneUnits` : Unidades utilizadas para el cálculo del consumo de ozono.
    -  `ozoneresults` : Variable que almacena los calculos del consumo de ozono.
 
