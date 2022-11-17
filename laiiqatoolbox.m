@@ -73,8 +73,8 @@ classdef laiiqatoolbox < handle
                 disp('No se seleccionó ningun archivo.');
             else
                 if length(string(obj.file)) == 1
-                  % obj.file = string(obj.file);
-                  obj.defaultlegend{1} = string(erase(obj.file,".mat"));
+                  obj.file = string(obj.file);
+                  obj.defaultlegend{1} = erase(obj.file,".mat");
                   % obj.xf{1} = 'end';
                 elseif length(string(obj.file)) > 1
                     for i=1:length(obj.file)
