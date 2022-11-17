@@ -1,5 +1,5 @@
 classdef laiiqatoolbox < handle
-    %% LAIIQATOOLBOX script v1.1.1
+    %% LAIIQATOOLBOX script v1.1.2
     %   Autor: F. Javier Morales Mtz.
     %   05/11/2022
     %   Matlab toolbox para ajustar y graficar los datos de los archivos
@@ -110,10 +110,9 @@ classdef laiiqatoolbox < handle
                 if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend)
                     obj.legend = obj.defaultlegend;
                 end
-
                 obj.fig.Visible = 'on';
-                obj.ax; % = axes;
                 cla(obj.ax);
+                obj.ax; % = axes;
                 hold(obj.ax,'on');
                 for i=1:length(obj.fixeddata)
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
@@ -128,39 +127,38 @@ classdef laiiqatoolbox < handle
                     end
                     plot(obj.ax, obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:), 'LineWidth', obj.LineWidth);
                 end
-                hold(obj.ax,'off');
-                title(obj.title, 'Interpreter', obj.titleInterpreter);
-                xlabel("Tiempo (" + obj.xlabel + ")",'Interpreter',obj.labelInterpreter);
-                ylabel(obj.ylabel,'Interpreter',obj.labelInterpreter);
-                grid(obj.grid);
+                title(obj.ax,obj.title, 'Interpreter', obj.titleInterpreter);
+                xlabel(obj.ax,"Tiempo (" + obj.xlabel + ")",'Interpreter',obj.labelInterpreter);
+                ylabel(obj.ax,obj.ylabel,'Interpreter',obj.labelInterpreter);
+                grid(obj.ax,obj.grid);
                 if isempty(obj.legend)
                     legend(obj.ax,'off');
                 else
                     legend(obj.ax,'on');
                     legend(obj.ax,obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
                 end
+                hold(obj.ax,'off');
             end
         end
 
         function obj = saveplot(obj,name)
-            obj.fig;
-            cla(obj.ax);
-            obj.ax;% = axes; % Checar como limpiar la figura
+            cla(obj.ax, 'reset');
+            obj.ax;
             hold(obj.ax,'on');
             for i=1:length(obj.fixeddata)
                 plot(obj.ax,obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:));
             end
-            hold(obj.ax,'off');
-            title(obj.title, 'Interpreter', obj.titleInterpreter);
-            xlabel("Tiempo (" + obj.xlabel + ")", 'Interpreter', obj.labelInterpreter);
-            ylabel(obj.ylabel,'Interpreter', obj.labelInterpreter);
-            grid(obj.grid);
+            title(obj.ax,obj.title, 'Interpreter', obj.titleInterpreter);
+            xlabel(obj.ax,"Tiempo (" + obj.xlabel + ")", 'Interpreter', obj.labelInterpreter);
+            ylabel(obj.ax,obj.ylabel,'Interpreter', obj.labelInterpreter);
+            grid(obj.ax,obj.grid);
             if isempty(obj.legend)
                 legend(obj.ax,'off');
             else
                 legend(obj.ax,'on');
                 legend(obj.ax,obj.legend, 'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
             end
+            hold(obj.ax,'off');
             if contains(name,'.pdf')
                 exportgraphics(obj.fig,name,'ContentType','vector');
             elseif contains(name,'.png') | contains(name,'.jpg') | contains(name,'.jpeg')
@@ -193,18 +191,30 @@ classdef laiiqatoolbox < handle
                         residual = trapz(obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:))/u;
                         consumed = (max(obj.fixeddata{i}(1,:))*max(obj.fixeddata{i}(2,:)))/u - residual;
                         total = residual + consumed;
-                        var(1) = residual;
-                        var(2) = consumed;
-                        var(3) = total;
-                        if isequal(obj.legend,{'default'})
+                        if obj.xlabel == 'h'
+                            var(1) = consumed*60;
+                            var(2) = residual*60;
+                            var(3) = total*60;
+                        elseif obj.xlabel == 'seg'
+                            var(1) = consumed/60;
+                            var(2) = residual/60;
+                            var(3) = total/60;
+                        else
+                            var(1) = consumed;
+                            var(2) = residual;
+                            var(3) = total;
+                        end
+                        if isequal(obj.legend,{'default'}) | isempty(obj.legend) | length(obj.legend)<length(obj.fixeddata)
                             disp("Para " + obj.defaultlegend{i} + ":");
                         else
                             disp("Para " + obj.legend{i} + ":");
                         end
-                        for j=1:length(ozonevars)
-                          disp("    " + ozonevars(j) + ": " + var(j) + " " + string(obj.ozoneUnits));
-                          obj.ozoneresults{i,j} = {ozonevars(j), var(j)};
+                        for j=1:2
+                            disp("    " + ozonevars(j) + ": " + var(j) + " " + string(obj.ozoneUnits));
+                            obj.ozoneresults{i,j} = {ozonevars(j), var(j)};
                         end
+                        disp("    " + ozonevars(3) + ": " + var(3) + " " + string(obj.ozoneUnits) + " en " + max(obj.fixeddata{i}(1,:)) + " " + obj.xlabel);
+                        obj.ozoneresults{i,3} = {ozonevars(3), var(3)};
                         disp(newline);
                     end
                 end
