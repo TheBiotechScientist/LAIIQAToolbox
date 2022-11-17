@@ -21,10 +21,10 @@ classdef laiiqatoolbox < handle
         legendFontSize; % = 8;
         legendLocation; % = 'best';
         imageResolution; % = 300;
-        titleInterpreter;
-        labelInterpreter;
+        titleInterpreter; % = 'tex';
+        labelInterpreter; % = 'tex';
         legendInterpreter; % = 'tex';
-        ozoneUnits;
+        ozoneUnits; % = 'g/L';
         ozoneresults;
     end
 
