@@ -75,6 +75,7 @@ classdef laiiqatoolbox < handle
                 if length(string(obj.file)) == 1
                   obj.file = string(obj.file);
                   obj.defaultlegend{1} = erase(obj.file,".mat");
+                  obj.rawdata{1} = importdata(fullfile(pathfile, obj.file));
                   % obj.xf{1} = 'end';
                 elseif length(string(obj.file)) > 1
                     for i=1:length(obj.file)
@@ -83,6 +84,7 @@ classdef laiiqatoolbox < handle
                         % obj.defaultlegend{i} = string(obj.defaultlegend{i});
                         obj.xf{i} = 'end';
                         obj.xk{i} = 1;
+                        obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
                     end
                 end
                 if isequal(obj.legendInterpreter,'latex')
@@ -90,10 +92,10 @@ classdef laiiqatoolbox < handle
                         obj.defaultlegend{i} = "$"+obj.defaultlegend{i}+"$";
                     end
                 end
-                for i=1:length(obj.file)
-                  obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
-                    % obj.legend{i} = replace(lgnd{i},'_','-');
-                end
+                %for i=1:length(obj.file)
+                %  obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
+                %    % obj.legend{i} = replace(lgnd{i},'_','-');
+                %end
             end
         end
 
