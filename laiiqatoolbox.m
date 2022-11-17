@@ -117,7 +117,7 @@ classdef laiiqatoolbox < handle
                 end
                 obj.fig.Visible = 'on';
                 cla(obj.ax);
-                obj.ax; % = axes;
+                obj.ax.Parent = obj.fig; % = axes;
                 hold(obj.ax,'on');
                 for i=1:length(obj.fixeddata)
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
@@ -149,7 +149,7 @@ classdef laiiqatoolbox < handle
 
         function obj = saveplot(obj,name)
             cla(obj.ax, 'reset');
-            obj.ax;
+            obj.ax.Parent = obj.fig;
             hold(obj.ax,'on');
             for i=1:length(obj.fixeddata)
                 plot(obj.ax,obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:));
