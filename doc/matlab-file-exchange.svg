@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="134" height="20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-3 {
+        opacity: 0.3;
+      }
+
+      .cls-4, .cls-5, .cls-6, .cls-7, .cls-8 {
+        isolation: isolate;
+        font-family: ArialMT, Arial;
+      }
+
+      .cls-4, .cls-5, .cls-6, .cls-7 {
+        font-size: 11px;
+      }
+
+      .cls-4, .cls-5 {
+        fill: #515151;
+      }
+
+      .cls-5, .cls-7 {
+        letter-spacing: -0.19em;
+      }
+
+      .cls-6, .cls-7, .cls-8 {
+        fill: #fff;
+      }
+
+      .cls-8 {
+        font-size: 8px;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="28.65" y1="378" x2="28.65" y2="398.01" gradientTransform="translate(0 -378)" gradientUnits="userSpaceOnUse">
+      <stop offset="0.68" stop-color="#cb6015"/>
+      <stop offset="1" stop-color="#a84f13"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="95.6" y1="377.9" x2="95.6" y2="398" gradientTransform="translate(0 -378)" gradientUnits="userSpaceOnUse">
+      <stop offset="0.67" stop-color="#0376a7"/>
+      <stop offset="1" stop-color="#02688c"/>
+    </linearGradient>
+  </defs>
+  <title>Layer 1-2</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g id="Layer_1-2-2" data-name="Layer 1-2">
+        <g>
+          <path class="cls-1" d="M57.3,20H3.1c-1.6.2-3-1.4-3.1-3.6H0V3.9C0,1.7,1.3,0,2.9,0H57.3Z"/>
+          <path class="cls-2" d="M130.3,20H57V0h73.3a3.7,3.7,0,0,1,3.8,3.7V16.2a3.8,3.8,0,0,1-3.8,3.8Z"/>
+          <g>
+            <g class="cls-3">
+              <g>
+                <text class="cls-4" transform="translate(4.5 14.7)">M</text>
+                <text class="cls-5" transform="translate(13.7 14.7)">A</text>
+                <text class="cls-4" transform="translate(20.2 14.7)">TLAB</text>
+              </g>
+            </g>
+            <g>
+              <text class="cls-6" transform="translate(3.5 13.7)">M</text>
+              <text class="cls-7" transform="translate(12.7 13.7)">A</text>
+              <text class="cls-6" transform="translate(19.2 13.7)">TLAB</text>
+              <text class="cls-8" transform="translate(46.7 10)">®</text>
+            </g>
+          </g>
+          <g>
+            <g class="cls-3">
+              <text class="cls-4" transform="translate(61.5 14.7)">File Exchange</text>
+            </g>
+            <text class="cls-6" transform="translate(60.5 13.7)">File Exchange</text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
