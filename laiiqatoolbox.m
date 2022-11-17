@@ -102,6 +102,7 @@ classdef laiiqatoolbox < handle
         end
 
         function obj = plotfiles(obj)
+            clear obj.fixeddata;
             obj.fixeddata = obj.rawdata;
             if isempty(obj.fixeddata)
                 disp("No se han cargado archivos para graficar. Ejecute openfiles primero.");
