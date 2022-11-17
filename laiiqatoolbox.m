@@ -13,6 +13,7 @@ classdef laiiqatoolbox < handle
         title; % = "Cinética de Ozonización";
         xlabel; % = 'min';
         xf; % valor de x final
+        xk; % multiplicador para x
         ylabel; % = "Concentración [g/L]";
         grid; % = 'on';
         LineWidth; % = 0.5;
@@ -42,6 +43,7 @@ classdef laiiqatoolbox < handle
             obj.title = "Cinética de Ozonización";
             obj.xlabel = 'min';
             obj.xf = {'end'};
+            obj.xk = {1};
             obj.ylabel = "Concentración [g/L]";
             obj.grid = 'on';
             obj.LineWidth = 0.5;
@@ -80,6 +82,7 @@ classdef laiiqatoolbox < handle
                         obj.defaultlegend{i} = string(erase(obj.file{i},".mat"));
                         % obj.defaultlegend{i} = string(obj.defaultlegend{i});
                         obj.xf{i} = 'end';
+                        obj.xk{i} = 1;
                     end
                 end
                 if isequal(obj.legendInterpreter,'latex')
@@ -118,6 +121,7 @@ classdef laiiqatoolbox < handle
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
                     obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
                     obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(2,:)==min(obj.fixeddata{i}(2,1:find(obj.fixeddata{i}(1,:)==10*60/t)))):end);
+                    obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)*obj.xk{i};
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
                     obj.fixeddata{i}(1,:) = round(obj.fixeddata{i}(1,:),4);
                     if isequal(obj.xf{i},'end')
