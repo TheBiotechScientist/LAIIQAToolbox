@@ -31,6 +31,8 @@ classdef laiiqatoolbox < handle
     properties (Access = private)
         fig;% = figure('visible','off');
         ax;% = axes;
+        fig2;
+        ax2;
         file;
         defaultlegend;
     end
