@@ -128,7 +128,7 @@ classdef laiiqatoolbox < handle
                     obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(2,:)==min(obj.fixeddata{i}(2,1:find(obj.fixeddata{i}(1,:)==10*60/t)))):end);
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)*obj.xk{i};
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
-                    obj.fixeddata{i}(1,:) = round(obj.fixeddata{i}(1,:),4);
+                    obj.fixeddata{i}(1,:) = round(obj.fixeddata{i}(1,:),2);
                     if isequal(obj.xf{i},'end')
                         obj.fixeddata{i} = obj.fixeddata{i}(:,1:end);
                     else
