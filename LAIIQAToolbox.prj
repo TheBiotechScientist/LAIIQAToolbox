@@ -1,13 +1,13 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="4116727504" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="1768759165" file="C:\Users\javne\Proyectos\LAIIQAToolbox\LAIIQAToolbox.prj" location="C:\Users\javne\Proyectos\LAIIQAToolbox" name="LAIIQAToolbox" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>LAIIQAToolbox</param.appname>
     <param.authnamewatermark>Francisco Javier Morales Martínez</param.authnamewatermark>
     <param.email>fmoralesm87@gmail.com</param.email>
     <param.company>TheBiotechScientist</param.company>
-    <param.summary>Programa para graficar archivos .mat del proceso de ozonización. LAIIQA - ESIQIE - IPN.</param.summary>
-    <param.description>Programa para ajustar y graficar los datos de los archivos .mat generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
+    <param.summary>Matlab toolbox para graficar archivos .mat del proceso de ozonización. LAIIQA - ESIQIE - IPN.</param.summary>
+    <param.description>Matlab toolbox para ajustar y graficar los datos de los archivos .mat generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
     <param.screenshot>${PROJECT_ROOT}\splash.png</param.screenshot>
-    <param.version>1.1</param.version>
+    <param.version>1.1.2</param.version>
     <param.output>${PROJECT_ROOT}\LAIIQAToolbox.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -42,9 +42,19 @@ splash.svg
 .git
 .gitignore
 example.m
-README.md</param.exclude.filters>
+README.md
+README_images</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
-    <param.examples />
+    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;examples&gt;
+   &lt;exampleCategory name="doc"&gt;
+      &lt;example name="example" type="html"&gt;
+         &lt;file type="source"&gt;/doc/html/example.html&lt;/file&gt;
+         &lt;file type="main"&gt;/doc/example.mlx&lt;/file&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+&lt;/examples&gt;</param.examples>
     <param.demosxml />
     <param.apps />
     <param.registered.apps />
@@ -76,7 +86,6 @@ README.md</param.exclude.filters>
       <param.output />
       <param.platforms />
       <param.exclude.pcodedmfiles />
-      <param.examples />
       <param.demosxml />
       <param.apps />
       <param.registered.apps />
@@ -104,7 +113,6 @@ README.md</param.exclude.filters>
     <fileset.rootfiles>
       <file>${PROJECT_ROOT}\demos.xml</file>
       <file>${PROJECT_ROOT}\doc</file>
-      <file>${PROJECT_ROOT}\examplefig1.png</file>
       <file>${PROJECT_ROOT}\info.xml</file>
       <file>${PROJECT_ROOT}\laiiqatoolbox.m</file>
       <file>${PROJECT_ROOT}\splash.png</file>
