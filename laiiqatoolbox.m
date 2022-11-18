@@ -1,5 +1,5 @@
 classdef laiiqatoolbox < handle
-    %% LAIIQATOOLBOX script v1.1.2.0
+    %% LAIIQATOOLBOX script v1.2.0.0
     %   Autor: F. Javier Morales Mtz.
     %   05/11/2022
     %   Matlab toolbox para ajustar y graficar los datos de los archivos
@@ -13,6 +13,7 @@ classdef laiiqatoolbox < handle
         title; % = "Cinética de Ozonización";
         xlabel; % = 'min';
         xf; % valor de x final
+        xk; % multiplicador para x
         ylabel; % = "Concentración [g/L]";
         grid; % = 'on';
         LineWidth; % = 0.5;
@@ -20,16 +21,18 @@ classdef laiiqatoolbox < handle
         legendFontSize; % = 8;
         legendLocation; % = 'best';
         imageResolution; % = 300;
-        titleInterpreter;
-        labelInterpreter;
+        titleInterpreter; % = 'tex';
+        labelInterpreter; % = 'tex';
         legendInterpreter; % = 'tex';
-        ozoneUnits;
+        ozoneUnits; % = 'g/L';
         ozoneresults;
     end
 
     properties (Access = private)
         fig;% = figure('visible','off');
         ax;% = axes;
+        fig2;
+        ax2;
         file;
         defaultlegend;
     end
@@ -42,6 +45,7 @@ classdef laiiqatoolbox < handle
             obj.title = "Cinética de Ozonización";
             obj.xlabel = 'min';
             obj.xf = {'end'};
+            obj.xk = {1};
             obj.ylabel = "Concentración [g/L]";
             obj.grid = 'on';
             obj.LineWidth = 0.5;
@@ -71,8 +75,9 @@ classdef laiiqatoolbox < handle
                 disp('No se seleccionó ningun archivo.');
             else
                 if length(string(obj.file)) == 1
-                  % obj.file = string(obj.file);
-                  obj.defaultlegend{1} = string(erase(obj.file,".mat"));
+                  obj.file = string(obj.file);
+                  obj.defaultlegend{1} = erase(obj.file,".mat");
+                  obj.rawdata{1} = importdata(fullfile(pathfile, obj.file));
                   % obj.xf{1} = 'end';
                 elseif length(string(obj.file)) > 1
                     for i=1:length(obj.file)
@@ -80,6 +85,8 @@ classdef laiiqatoolbox < handle
                         obj.defaultlegend{i} = string(erase(obj.file{i},".mat"));
                         % obj.defaultlegend{i} = string(obj.defaultlegend{i});
                         obj.xf{i} = 'end';
+                        obj.xk{i} = 1;
+                        obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
                     end
                 end
                 if isequal(obj.legendInterpreter,'latex')
@@ -87,14 +94,15 @@ classdef laiiqatoolbox < handle
                         obj.defaultlegend{i} = "$"+obj.defaultlegend{i}+"$";
                     end
                 end
-                for i=1:length(obj.file)
-                  obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
-                    % obj.legend{i} = replace(lgnd{i},'_','-');
-                end
+                %for i=1:length(obj.file)
+                %  obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
+                %    % obj.legend{i} = replace(lgnd{i},'_','-');
+                %end
             end
         end
 
         function obj = plotfiles(obj)
+            clear obj.fixeddata;
             obj.fixeddata = obj.rawdata;
             if isempty(obj.fixeddata)
                 disp("No se han cargado archivos para graficar. Ejecute openfiles primero.");
@@ -112,14 +120,15 @@ classdef laiiqatoolbox < handle
                 end
                 obj.fig.Visible = 'on';
                 cla(obj.ax);
-                obj.ax; % = axes;
+                obj.ax.Parent = obj.fig; % = axes;
                 hold(obj.ax,'on');
                 for i=1:length(obj.fixeddata)
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
                     obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
                     obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(2,:)==min(obj.fixeddata{i}(2,1:find(obj.fixeddata{i}(1,:)==10*60/t)))):end);
+                    obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)*obj.xk{i};
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
-                    obj.fixeddata{i}(1,:) = round(obj.fixeddata{i}(1,:),4);
+                    obj.fixeddata{i}(1,:) = round(obj.fixeddata{i}(1,:),2);
                     if isequal(obj.xf{i},'end')
                         obj.fixeddata{i} = obj.fixeddata{i}(:,1:end);
                     else
@@ -143,7 +152,7 @@ classdef laiiqatoolbox < handle
 
         function obj = saveplot(obj,name)
             cla(obj.ax, 'reset');
-            obj.ax;
+            obj.ax.Parent = obj.fig;
             hold(obj.ax,'on');
             for i=1:length(obj.fixeddata)
                 plot(obj.ax,obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:));
