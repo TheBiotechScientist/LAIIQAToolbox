@@ -12,8 +12,8 @@ classdef laiiqatoolbox < handle
         fixeddata;
         title; % = "Cinética de Ozonización";
         xlabel; % = 'min';
-        xf; % valor de x final
         xk; % multiplicador para x
+        xf; % valor de x final
         ylabel; % = "Concentración [g/L]";
         grid; % = 'on';
         LineWidth; % = 0.5;
@@ -44,8 +44,8 @@ classdef laiiqatoolbox < handle
             obj.ax = axes;
             obj.title = "Cinética de Ozonización";
             obj.xlabel = 'min';
-            obj.xf = {'end'};
             obj.xk = {1};
+            obj.xf = {'end'};
             obj.ylabel = "Concentración [g/L]";
             obj.grid = 'on';
             obj.LineWidth = 0.5;
