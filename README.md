@@ -1,23 +1,22 @@
 # LAIIQAToolbox
+  
 
+![image_0.png](README_images/image_0.png)
 
-<!-- ![image_0.png](README_images/image_0.png) -->
-[![View LAIIQAToolbox on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://la.mathworks.com/matlabcentral/fileexchange/120218-laiiqatoolbox)
-
-
+  
 # Descripción
 
 **Matlab®** **toolbox** para ajustar y graficar los datos de los archivos `.mat` generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.
 
-
+  
 
 ![image_1.png](README_images/image_1.png)
 
-
+  
 # Requerimientos de Sistema
 
-   -  MATLAB R2020b o posterior.
-   -  *laiiqatoolbox*
+   -  MATLAB R2020b o posterior. 
+   -  *laiiqatoolbox* 
 
 # Instalación
 
@@ -25,46 +24,46 @@ Desde **Matlab**, ir a pestaña  **Home** > **Add-Ons** > **Get Add-Ons**, en el
 
 # Caracteristicas
 
-   -  Programación orientada a objetos.
-   -  Grafica datos ajustados (recortados) a una concentración inicial cero (o cercana).
-   -  Acceso a propiedades de grafico: titulo, etiquetas de ejes *x* y *y*, legenda, grosor de línea, etc.
-   -  Conversión de datos de tiempo del eje $x$ : `seg`, `min`, `h`.
-   -  Multiselección de archivos para grafcar.
-   -  Acceso a variables de datos crudos (`rawdata`) y ajustados (`fixeddata`).
-   -  Calculo de consumo de ozono.
-   -  Acceso a variables de consumo de ozono (`ozoneresults`).
-   -  Guardado de grafico en varios formatos: `png`, `jpg`, `jpeg`, `pdf`, `eps`, `svg`, `tif`, `fig`.
-   -  Creación de varios objetos gráficos a la vez.
-   -  Delimitación del tiempo total final, $x_f$, para cada linea de datos.
-   -  Posibilidad de ajustar el tiempo total desfazado de la cinética con el multiplicador $x\cdot k$.
+   -  Programación orientada a objetos. 
+   -  Grafica datos ajustados (recortados) a una concentración inicial cero (o cercana). 
+   -  Acceso a propiedades de grafico: titulo, etiquetas de ejes ***x*** y ***y***, legenda, grosor de línea, etc. 
+   -  Conversión de datos de tiempo del eje ***x*** : `seg`, `min`, `h`. 
+   -  Multiselección de archivos para grafcar. 
+   -  Acceso a variables de datos crudos (`rawdata`) y ajustados (`fixeddata`). 
+   -  Calculo de consumo de ozono. 
+   -  Acceso a variables de consumo de ozono (`ozoneresults`). 
+   -  Guardado de grafico en varios formatos: `png`, `jpg`, `jpeg`, `pdf`, `eps`, `svg`, `tif`, `fig`. 
+   -  Creación de varios objetos gráficos a la vez. 
+   -  Delimitación del tiempo total final, `xf`, para cada linea de datos. 
+   -  Posibilidad de ajustar el tiempo total desfazado de la cinética, multiplicando los datos de tiempo por una constante ***k***, con la propiedad `xk`. 
 
 # Propiedades del objeto `laiiqatoolbox`
 
-   -  `rawdata` : Datos "crudos", sin tratamiento, que contiene las filas de tiempo (1/100 $seg$)  y concentración de ozono ($g/m^3$) del archivo `.mat`.
-   -  `fixeddata` : Datos "ajustados", recortados para quitar los primeros datos de estabilización de la concentración de ozono y para comenzar el ozonograma desde una concentración igual o cercana a cero. Convierte los datos de tiempo a minutos por default.
-   -  `title` : Modifica o quita el titulo del gráfico.
-   -  `xlabel` : Modifica los datos de tiempo. **Opciones**: `'seg'` | `'min'` | `'h'`.
-   -  `xk` : Multiplica los valores de tiempo $x$ de cada linea de datos por una constante $k$.
-   -  `xf` : Establece un valor final de tiempo, $x_f$ para cada linea de datos, de acuerdo a las unidades establecidas en  `xlabel`. **Opciones**: `'end'` (default) | <`x>` (cualquier valor de tiempo). Ejemplo: `miobjeto.xf = { 60 'end' 45 ...etc }`. Con `xlabel = 'min'`, `60` y `45` corresponden a minutos.
-   -  `ylabel` : Cambia el titulo del eje *y*.
-   -  `grid` : Activa o desactiva las rejillas del gráfico. **Opciones**: `'on'` (default) `|` `'off'` | `'minor'`.
-   -  `LineWidth` :Cambia el grosor de linea para todas las lineas de datos. Default = `11`.
-   -  `legend` : Cambia o quita la legenda para cada linea de datos. **Opciones**: `{'default'}` (default) | `{ "<nombre de leyenda 1>"  "<nombre de leyenda 2>"  ...etc }`. Ejemplo: `{'default'} `ó `{"Linea 1" "Linea 2" "Linea 3" ...etc }`. `default` pone de leyenda los nombres de archivos abiertos.
-   -  `legendFontSize` : Cambia el tamaño de letra de todas las leyenda. Default = `8`.
-   -  `legendLocation` : Ubicación de la leyenda en el gráfico. **Opciones**: `'best'` (default) | `'south'` | `'east'` | `'west'` | `'northeast'` | ...etc. Ver [documentación](https://la.mathworks.com/help/matlab/ref/matlab.graphics.illustration.legend-properties.html) para más opciones.
-   -  `imageResolution` : Cambia la resolución de los formatos de imgen al guardar con el método `saveplot('nombre.ext')`. Default = `300`.
-   -  `titleInterpreter` : Interprete utilizado para el renderizado del titulo. **Opciones**: `'tex'` (default)  | `'latex'`.
-   -  `labelInterpreter` : Interprete utilizado para el renderizado del titulo de los ejes. **Opciones**: `'tex' (default) | 'latex'`.
-   -  `legendInterpreter` : Interprete utilizado para el renderizado de las leyedas. **Opciones**: `'tex' (default) | 'latex'`.
-   -  `ozoneUnits` : Unidades utilizadas para el cálculo del consumo de ozono. **Opciones**: `'g/L'` (default) | `g/m^3'` | `'g/Nm^3'`.
-   -  `ozoneresults` : Variable que almacena los calculos del consumo de ozono.
+   -  `rawdata` : Datos "crudos", sin tratamiento, que contiene las filas de tiempo (1/100 ***seg***)  y concentración de ozono (***g/m^3***) del archivo `.mat`. 
+   -  `fixeddata` : Datos "ajustados", recortados para quitar los primeros datos de estabilización de la concentración de ozono y para comenzar el ozonograma desde una concentración igual o cercana a cero. Convierte los datos de tiempo a minutos por default. 
+   -  `title` : Modifica o quita el titulo del gráfico. 
+   -  `xlabel` : Modifica los datos de tiempo. **Opciones**: `'seg'` | `'min'` | `'h'`. 
+   -  `xk` : Multiplica los valores de tiempo, ***x***, de cada linea de datos por una constante ***k***. 
+   \item{ `xf` : Establece un valor final de tiempo, ***x final***, para cada linea de datos, de acuerdo a las unidades establecidas en  `xlabel`. **Opciones**: `'end'` (default) | `<x>` (cualquier valor de tiempo). Ejemplo: `miobjeto.xf = { 60 'end' 45 ...etc }`. Con `xlabel = 'min'`, `60` y `45` corresponden a minutos. }
+   -  `ylabel` : Cambia el titulo del eje ***y***. 
+   -  `grid` : Activa o desactiva las rejillas del gráfico. **Opciones**: `'on'` (default) `|` `'off'` | `'minor'`. 
+   -  `LineWidth` :Cambia el grosor de linea para todas las lineas de datos. Default = `11`. 
+   \item{ `legend` : Cambia o quita la legenda para cada linea de datos. **Opciones**: `{'default'}` (default) | `{ "<nombre de leyenda 1>"  "<nombre de leyenda 2>"  ...etc }`. Ejemplo: `{'default'} `ó `{"Linea 1" "Linea 2" "Linea 3" ...etc }`. `default` pone de leyenda los nombres de archivos abiertos. }
+   -  `legendFontSize` : Cambia el tamaño de letra de todas las leyenda. Default = `8`. 
+   -  `legendLocation` : Ubicación de la leyenda en el gráfico. **Opciones**: `'best'` (default) | `'south'` | `'east'` | `'west'` | `'northeast'` | ...etc. Ver [documentación](https://la.mathworks.com/help/matlab/ref/matlab.graphics.illustration.legend-properties.html) para más opciones. 
+   -  `imageResolution` : Cambia la resolución de los formatos de imgen al guardar con el método `saveplot('nombre.ext')`. Default = `300`. 
+   -  `titleInterpreter` : Interprete utilizado para el renderizado del titulo. **Opciones**: `'tex'` (default)  | `'latex'`. 
+   -  `labelInterpreter` : Interprete utilizado para el renderizado del titulo de los ejes. **Opciones**: `'tex' (default) | 'latex'`. 
+   -  `legendInterpreter` : Interprete utilizado para el renderizado de las leyedas. **Opciones**: `'tex' (default) | 'latex'`. 
+   -  `ozoneUnits` : Unidades utilizadas para el cálculo del consumo de ozono. **Opciones**: `'g/L'` (default) | `'g/m^3'` | `'g/Nm^3'`. 
+   -  `ozoneresults` : Variable que almacena los calculos del consumo de ozono. 
 
 # Métodos del objeto `laiiqatoolbox`
 
-   -  `openfiles` : Abre una ventana de dialogo para selececionar los archivos a graficar.
-   -  `plotfiles` : Procesa los archivos seleccionados y crea el objeto gráfico.
-   -  `ozonecalc` : Procesa los datos de cada archivo y calcula el ozono consumido, residual y total.
-   -  `saveplot` : Guarda el objeto gráfico con el nombre y formato especificado. Ejemplo: `saveplot('nombre.pdf')`.
+   -  `openfiles` : Abre una ventana de dialogo para selececionar los archivos a graficar. 
+   -  `plotfiles` : Procesa los archivos seleccionados y crea el objeto gráfico. 
+   -  `ozonecalc` : Procesa los datos de cada archivo y calcula el ozono consumido, residual y total. 
+   -  `saveplot` : Guarda el objeto gráfico con el nombre y formato especificado. Ejemplo: `saveplot('nombre.pdf')`. 
 
 # Guía de uso
 ## Creación del objeto
@@ -79,7 +78,7 @@ miobjeto1 = laiiqatoolbox
 ```
 
 ```text:Output
-miobjeto1 =
+miobjeto1 = 
   laiiqatoolbox with properties:
 
               rawdata: []
@@ -112,7 +111,7 @@ miobjeto1.openfiles
 ```
 
 ```text:Output
-ans =
+ans = 
   laiiqatoolbox with properties:
 
               rawdata: {[2x498709 double]  [2x500280 double]  [2x423437 double]}
@@ -147,7 +146,7 @@ miobjeto1.plotfiles
 ![figure_0.png](README_images/figure_0.png)
 
 ```text:Output
-ans =
+ans = 
   laiiqatoolbox with properties:
 
               rawdata: {[2x498709 double]  [2x500280 double]  [2x423437 double]}
@@ -201,7 +200,7 @@ miobjeto1.plotfiles; % Aplicamos los cambios
 
 ## Uso de propiedad `xf`:
 
-Como se observa en el gráfico anterior, los datos de la **Linea 1 **terminan abruptamente después del minuto 60, para acotar los datos hasta el minuto 60 y quitar los demás, modificamos el valor de $x_f$ ($x$ final) de la **Linea 1** con la propiedad `xf:`
+Como se observa en el gráfico anterior, los datos de la **Linea 1** terminan abruptamente después del minuto 60, para acotar los datos hasta el minuto 60 y quitar los demás, modificamos el valor de *x* final de la **Linea 1** con la propiedad `xf:`
 
 ```matlab:Code
 miobjeto1.xlabel = 'min'; % Establecemos las unidades de tiempo
@@ -223,8 +222,8 @@ miobjeto1.plotfiles; % Aplicamos los cambiamos
 Para cambiar los 3 valores de `xf `al mismo tiempo:
 
 ```matlab:Code
-miobjeto1.xf = {60 'end' 50}; % Asignamos un valor de 60 min
-% a la Linea 1, todos los datos a la Linea 2 y
+miobjeto1.xf = {60 'end' 50}; % Asignamos un valor de 60 min 
+% a la Linea 1, todos los datos a la Linea 2 y 
 % 50 min a la Linea 3
 miobjeto1.plotfiles; % Aplicamos los cambios
 ```
@@ -235,12 +234,12 @@ miobjeto1.plotfiles; % Aplicamos los cambios
 
 En ocasiones, cuando una cinética tardó 2 horas en realizarse, en los datos se registra como si hubiera durado 1 hora. Esto se debe a que tanto la señal de la concentración de ozono, como la velocidad de procesamiento de la computadora, llegan a tener un desface de tiempo en el registro de los datos. Para solucionar este fallo, se puede hacer uso de la propiedad `xk`, la cual multiplica los valores de tiempo por el valor deseado.
 
-Para el gráfico anterior, modificaremos la **Línea 2** y **3** para hacerlas coincidir con la caída de concentración de la **Línea 1**
+Para el gráfico anterior, modificaremos la **Línea 2** y **3** para hacerlas coincidir con la caída de concentración de la **Línea 1** 
 
 ```matlab:Code
 miobjeto1.legend = {'default'}; % Restauramos las leyendas
 miobjeto1.xf = {'end' 'end' 'end'}; % Primero establecemos los valores por default de xf
-miobjeto1.xk = {1 1.15 1.2}; % La linea 1 se queda igual, aumentamos el tiempo de la
+miobjeto1.xk = {1 1.15 1.2}; % La linea 1 se queda igual, aumentamos el tiempo de la 
 % linea 2 en un 15% y linea 3 un 20%
 miobjeto1.xf = {50 50 50}; % Cortamos los datos de todas las lineas a 50 minutos máximo
 miobjeto1.plotfiles; % Aplicamos los cambios
