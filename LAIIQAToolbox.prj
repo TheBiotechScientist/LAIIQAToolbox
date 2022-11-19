@@ -62,7 +62,7 @@ README_images</param.exclude.filters>
     <param.getting.started.guide>${PROJECT_ROOT}\doc\GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
-    <param.exported.on.package>false</param.exported.on.package>
+    <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons />
     <param.matlab.project.id />
     <param.matlab.project.name />
@@ -91,7 +91,6 @@ README_images</param.exclude.filters>
       <param.registered.apps />
       <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
-      <param.exported.on.package />
       <param.required.addons />
       <param.matlab.project.id />
       <param.matlab.project.name />
@@ -115,7 +114,6 @@ README_images</param.exclude.filters>
       <file>${PROJECT_ROOT}\doc</file>
       <file>${PROJECT_ROOT}\info.xml</file>
       <file>${PROJECT_ROOT}\laiiqatoolbox.m</file>
-      <file>${PROJECT_ROOT}\README.html</file>
       <file>${PROJECT_ROOT}\splash.png</file>
       <file>${PROJECT_ROOT}\testfiles</file>
     </fileset.rootfiles>
