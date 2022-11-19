@@ -129,7 +129,7 @@ classdef laiiqatoolbox < handle
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)*obj.xk{i};
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)-obj.fixeddata{i}(1,1);
                     obj.fixeddata{i}(1,:) = round(obj.fixeddata{i}(1,:),2);
-                    if isequal(obj.xf{i},'end')
+                    if isequal(obj.xf{i},'end') | obj.xf{i}>max(obj.fixeddata{i}(1,:))
                         obj.fixeddata{i} = obj.fixeddata{i}(:,1:end);
                     else
                         obj.fixeddata{i} = obj.fixeddata{i}(:,1:find(obj.fixeddata{i}(1,:)==obj.xf{i}));
