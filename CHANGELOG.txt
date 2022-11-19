@@ -1,4 +1,17 @@
-# v1.2.1 - Fix Patch - xf
+# v1.3.0 Enhancement - plotozonecalc
+
+## Enhancement:
+  - Creado método `plotozonecalc` para crear gráfico de barras de los cálculos de ozono cosumido, residualy total.
+  - Creadas propiedades de objetos, `ozonefig` y `ozoneax`, para los gráficos generados por `plotozonecalc`.
+
+## Métodos nuevos:
+  - `plotozonecalc` : Crea un gráfico de barras de los resultados de ozono consumido, residual y total.
+
+
+=============================================
+
+
+# v1.2.1 Fix Patch - xf
 
 ## Fixed:
 - Corrección de error cuando `xf` excede el máximo de los datos de tiempo.
