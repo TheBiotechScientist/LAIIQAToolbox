@@ -1,0 +1,27 @@
+# v1.2.1 - Fix Patch - xf
+
+## Fixed:
+- Corrección de error cuando `xf` excede el máximo de los datos de tiempo.
+- Corrección de error cuando se cierra la ventana de la figura.
+
+## Caracteristicas:
+
+  -  Programación orientada a objetos.
+  -  Grafica datos ajustados (recortados) a una concentración inicial cero (o cercana).
+  -  Acceso a propiedades de grafico: titulo, etiquetas de ejes ***x*** y ***y***, legenda, grosor de línea, etc.
+  -  Conversión de datos de tiempo del eje ***x*** : `seg`, `min`, `h`.
+  -  Multiselección de archivos para grafcar.
+  -  Acceso a variables de datos crudos (`rawdata`) y ajustados (`fixeddata`).
+  -  Calculo de consumo de ozono.
+  -  Acceso a variables de consumo de ozono (`ozoneresults`).
+  -  Guardado de grafico en varios formatos: `png`, `jpg`, `jpeg`, `pdf`, `eps`, `svg`, `tif`, `fig`.
+  -  Creación de varios objetos gráficos a la vez.
+  -  Delimitación del tiempo total final, `xf`, para cada linea de datos.
+  -  Posibilidad de ajustar el tiempo total desfazado de la cinética, multiplicando los datos de tiempo por una constante ***k***, con la propiedad `xk`.
+
+## Métodos del objeto `laiiqatoolbox`:
+
+  -  `openfiles` : Abre una ventana de dialogo para selececionar los archivos a graficar.
+  -  `plotfiles` : Procesa los archivos seleccionados y crea el objeto gráfico.
+  -  `ozonecalc` : Procesa los datos de cada archivo y calcula el ozono consumido, residual y total.
+  -  `saveplot` : Guarda el objeto gráfico con el nombre y formato especificado. Ejemplo: `saveplot('nombre.pdf')`.
