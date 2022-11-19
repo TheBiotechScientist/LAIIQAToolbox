@@ -4,6 +4,7 @@
 <!-- ![image_0.png](README_images/image_0.png) -->
 [![View LAIIQAToolbox on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://la.mathworks.com/matlabcentral/fileexchange/120218-laiiqatoolbox)
 
+
 # Descripción
 
 **Matlab®** **toolbox** para ajustar y graficar los datos de los archivos `.mat` generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.
@@ -27,7 +28,7 @@ Desde **Matlab**, ir a pestaña  **Home** > **Add-Ons** > **Get Add-Ons**, en el
    -  Programación orientada a objetos.
    -  Grafica datos ajustados (recortados) a una concentración inicial cero (o cercana).
    -  Acceso a propiedades de grafico: titulo, etiquetas de ejes *x* y *y*, legenda, grosor de línea, etc.
-   -  Conversión de datos de tiempo del eje *x* : `seg`, `min`, `h`.
+   -  Conversión de datos de tiempo del eje $x$ : `seg`, `min`, `h`.
    -  Multiselección de archivos para grafcar.
    -  Acceso a variables de datos crudos (`rawdata`) y ajustados (`fixeddata`).
    -  Calculo de consumo de ozono.
@@ -35,11 +36,11 @@ Desde **Matlab**, ir a pestaña  **Home** > **Add-Ons** > **Get Add-Ons**, en el
    -  Guardado de grafico en varios formatos: `png`, `jpg`, `jpeg`, `pdf`, `eps`, `svg`, `tif`, `fig`.
    -  Creación de varios objetos gráficos a la vez.
    -  Delimitación del tiempo total final, $x_f$, para cada linea de datos.
-   -  Posibilidad de ajustar el tiempo total desfazado de la cinética con el multiplicador $xk$.
+   -  Posibilidad de ajustar el tiempo total desfazado de la cinética con el multiplicador $x\cdot k$.
 
 # Propiedades del objeto `laiiqatoolbox`
 
-   -  `rawdata` : Datos "crudos", sin tratamiento, que contiene las filas de tiempo (1/100 $s$)  y concentración de ozono ($g/m^3$) del archivo `.mat`.
+   -  `rawdata` : Datos "crudos", sin tratamiento, que contiene las filas de tiempo (1/100 $seg$)  y concentración de ozono ($g/m^3$) del archivo `.mat`.
    -  `fixeddata` : Datos "ajustados", recortados para quitar los primeros datos de estabilización de la concentración de ozono y para comenzar el ozonograma desde una concentración igual o cercana a cero. Convierte los datos de tiempo a minutos por default.
    -  `title` : Modifica o quita el titulo del gráfico.
    -  `xlabel` : Modifica los datos de tiempo. **Opciones**: `'seg'` | `'min'` | `'h'`.
@@ -71,8 +72,8 @@ Desde **Matlab**, ir a pestaña  **Home** > **Add-Ons** > **Get Add-Ons**, en el
 Inicializamos una instancia de objeto de tipo ***laiiqatoolbox***:
 
 ```matlab:Code
-% clearvars
-% close all
+clearvars
+close all
 clc
 miobjeto1 = laiiqatoolbox
 ```
@@ -85,6 +86,7 @@ miobjeto1 =
             fixeddata: []
                 title: "Cinética de Ozonización"
                xlabel: 'min'
+                   xk: {[1]}
                    xf: {'end'}
                ylabel: "Concentración [g/L]"
                  grid: 'on'
@@ -117,6 +119,7 @@ ans =
             fixeddata: []
                 title: "Cinética de Ozonización"
                xlabel: 'min'
+                   xk: {[1]  [1]  [1]}
                    xf: {'end'  'end'  'end'}
                ylabel: "Concentración [g/L]"
                  grid: 'on'
@@ -151,11 +154,12 @@ ans =
             fixeddata: {[2x450938 double]  [2x466141 double]  [2x405324 double]}
                 title: "Cinética de Ozonización"
                xlabel: 'min'
+                   xk: {[1]  [1]  [1]}
                    xf: {'end'  'end'  'end'}
                ylabel: "Concentración [g/L]"
                  grid: 'on'
             LineWidth: 0.5000
-               legend: {["4CF001_corrida2_500mL_13082021"]  ["4CF002_corrida2_500mL_02092021"]  ["4CF003_corrida2_500mL_13092021"]}
+               legend: {["4CF001-corrida2-500mL-13082021"]  ["4CF002-corrida2-500mL-02092021"]  ["4CF003-corrida2-500mL-13092021"]}
        legendFontSize: 8
        legendLocation: 'best'
       imageResolution: 300
@@ -195,7 +199,9 @@ miobjeto1.plotfiles; % Aplicamos los cambios
 
 ![figure_2.png](README_images/figure_2.png)
 
-Como se observa en el gráfico anterior, los datos de la **Linea 1 **terminan abruptamente después del minuto 60, para quitarlos modificamos el valor de $x_f$ ($x$ final) de la **Linea 1** con la propiedad `xf:`
+## Uso de propiedad `xf`:
+
+Como se observa en el gráfico anterior, los datos de la **Linea 1 **terminan abruptamente después del minuto 60, para acotar los datos hasta el minuto 60 y quitar los demás, modificamos el valor de $x_f$ ($x$ final) de la **Linea 1** con la propiedad `xf:`
 
 ```matlab:Code
 miobjeto1.xlabel = 'min'; % Establecemos las unidades de tiempo
@@ -225,6 +231,23 @@ miobjeto1.plotfiles; % Aplicamos los cambios
 
 ![figure_5.png](README_images/figure_5.png)
 
+## Utilizando el multiplicador de tiempo `xk`:
+
+En ocasiones, cuando una cinética tardó 2 horas en realizarse, en los datos se registra como si hubiera durado 1 hora. Esto se debe a que tanto la señal de la concentración de ozono, como la velocidad de procesamiento de la computadora, llegan a tener un desface de tiempo en el registro de los datos. Para solucionar este fallo, se puede hacer uso de la propiedad `xk`, la cual multiplica los valores de tiempo por el valor deseado.
+
+Para el gráfico anterior, modificaremos la **Línea 2** y **3** para hacerlas coincidir con la caída de concentración de la **Línea 1**
+
+```matlab:Code
+miobjeto1.legend = {'default'}; % Restauramos las leyendas
+miobjeto1.xf = {'end' 'end' 'end'}; % Primero establecemos los valores por default de xf
+miobjeto1.xk = {1 1.15 1.2}; % La linea 1 se queda igual, aumentamos el tiempo de la
+% linea 2 en un 15% y linea 3 un 20%
+miobjeto1.xf = {50 50 50}; % Cortamos los datos de todas las lineas a 50 minutos máximo
+miobjeto1.plotfiles; % Aplicamos los cambios
+```
+
+![figure_6.png](README_images/figure_6.png)
+
 ## Calculo del consumo de ozono
 
 Una vez ejecutados los métodos `openfiles` y `plotfiles` se puede ejecutar el método `ozonecalc`:
@@ -234,20 +257,20 @@ miobjeto1.ozonecalc;
 ```
 
 ```text:Output
-Para Linea 1:
-    Consumido: 0.27064 g/L
-    Residual: 1.775 g/L
-    Total: 2.0456 g/L en 60 min
+Para 4CF001-corrida2-500mL-13082021:
+    Consumido: 0.25763 g/L
+    Residual: 1.4457 g/L
+    Total: 1.7033 g/L en 50 min
 
-Para Linea 2:
-    Consumido: 0.35836 g/L
-    Residual: 2.3315 g/L
-    Total: 2.6899 g/L en 77.69 min
+Para 4CF002-corrida2-500mL-02092021:
+    Consumido: 0.34154 g/L
+    Residual: 1.3459 g/L
+    Total: 1.6875 g/L en 50 min
 
-Para Linea 3:
-    Consumido: 0.29924 g/L
-    Residual: 1.4031 g/L
-    Total: 1.7024 g/L en 50 min
+Para 4CF003-corrida2-500mL-13092021:
+    Consumido: 0.31898 g/L
+    Residual: 1.3468 g/L
+    Total: 1.6658 g/L en 50 min
 ```
 
 ## Exportar imagen del gráfico
@@ -259,15 +282,15 @@ miobjeto1.imageResolution = 600; % Resolución de imagen, default = 300
 miobjeto1.saveplot('ozonograma1.png'); % Nombre y extensión del archivo
 ```
 
-![figure_6.png](README_images/figure_6.png)
+![figure_7.png](README_images/figure_7.png)
 
-Para guardar en formato vectorial (*pdf, eps, svg*) no es necesario modificar la resolución:
+Para guardar en formato vectorial (*pdf*,* eps*,* svg*) no es necesario modificar la resolución:
 
 ```matlab:Code
 miobjeto1.saveplot('ozonograma1.pdf');
 ```
 
-![figure_7.png](README_images/figure_7.png)
+![figure_8.png](README_images/figure_8.png)
 
 ***
 *Generated from GettingStarted.mlx with [Live Script to Markdown Converter](https://github.com/roslovets/Live-Script-to-Markdown-Converter)*
