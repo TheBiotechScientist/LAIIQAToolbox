@@ -11,6 +11,7 @@ classdef laiiqatoolbox < handle
         rawdata;
         fixeddata;
         title; % = "Cinética de Ozonización";
+        ozonetitle;
         xlabel; % = 'min';
         xk; % multiplicador para x
         xf; % valor de x final
@@ -45,6 +46,7 @@ classdef laiiqatoolbox < handle
             obj.ozonefig = figure('Visible','off');
             obj.ozoneax = axes('Parent',obj.ozonefig);
             obj.title = "Cinética de Ozonización";
+            obj.ozonetitle = "Consumo de Ozono";
             obj.xlabel = 'min';
             obj.xk = {1};
             obj.xf = {'end'};
