@@ -1,5 +1,5 @@
 classdef laiiqatoolbox < handle
-    %% LAIIQATOOLBOX script v1.2.1
+    %% LAIIQATOOLBOX script v1.3.0
     %   Autor: F. Javier Morales Mtz.
     %   05/11/2022
     %   Matlab toolbox para ajustar y graficar los datos de los archivos
@@ -11,6 +11,7 @@ classdef laiiqatoolbox < handle
         rawdata;
         fixeddata;
         title; % = "Cinética de Ozonización";
+        ozonetitle;
         xlabel; % = 'min';
         xk; % multiplicador para x
         xf; % valor de x final
@@ -31,8 +32,8 @@ classdef laiiqatoolbox < handle
     properties (Access = private)
         fig;% = figure('visible','off');
         ax;% = axes;
-        fig2;
-        ax2;
+        ozonefig;
+        ozoneax;
         file;
         defaultlegend;
     end
@@ -42,7 +43,10 @@ classdef laiiqatoolbox < handle
         function obj = laiiqatoolbox()
             obj.fig = figure('Visible', 'off');
             obj.ax = axes;
+            obj.ozonefig = figure('Visible','off');
+            obj.ozoneax = axes('Parent',obj.ozonefig);
             obj.title = "Cinética de Ozonización";
+            obj.ozonetitle = "Consumo de Ozono";
             obj.xlabel = 'min';
             obj.xk = {1};
             obj.xf = {'end'};
@@ -61,19 +65,19 @@ classdef laiiqatoolbox < handle
         end
 
         function obj = openfiles(obj)
-            clear obj.rawdata
-            clear obj.fixeddata
-            clear obj.legend
             clear obj.file
             clear pathfile
-            clear obj.ozoneresults
-            clear onj.defaultlegend
-
             [obj.file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
 
             if isequal(obj.file,0)
                 disp('No se seleccionó ningun archivo.');
             else
+                clear obj.rawdata
+                clear obj.fixeddata
+                % clear obj.legend
+                clear obj.ozoneresults
+                clear onj.defaultlegend
+
                 if length(string(obj.file)) == 1
                   obj.file = string(obj.file);
                   obj.defaultlegend{1} = erase(obj.file,".mat");
@@ -148,6 +152,68 @@ classdef laiiqatoolbox < handle
                 end
                 hold(obj.ax,'off');
             end
+        end
+
+        function obj = plotozonecalc(obj)
+            if isempty(obj.fixeddata)
+                disp('Variable fixeddata vacía. Ejecute plotfiles primero.');
+            else
+                ozonevars = ["Consumido","Residual","Total"];
+
+                if isequal(obj.ozoneUnits,'g/L')
+                    u = 1000;
+                elseif isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
+                    u = 1;
+                else
+                    u = 0;
+                end
+
+                if isequal(u,0)
+                    disp('Unidades incorrectas. Opciones validas: g/L | g/Nm^3 | g/m^3');
+                else
+                    for i=1:length(obj.fixeddata)
+                        residual = trapz(obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:))/u;
+                        consumed = (max(obj.fixeddata{i}(1,:))*max(obj.fixeddata{i}(2,:)))/u - residual;
+                        total = residual + consumed;
+                        if obj.xlabel == 'h'
+                            var(1) = consumed*60;
+                            var(2) = residual*60;
+                            var(3) = total*60;
+                        elseif obj.xlabel == 'seg'
+                            var(1) = consumed/60;
+                            var(2) = residual/60;
+                            var(3) = total/60;
+                        else
+                            var(1) = consumed;
+                            var(2) = residual;
+                            var(3) = total;
+                        end
+                        for j=1:3
+                            obj.ozoneresults{i,j} = {ozonevars(j), var(j)};
+                        end
+                    end
+                end
+            end
+
+            for i=1:length(obj.fixeddata)
+                for j=1:3
+                    y(i,j) = obj.ozoneresults{i,j}{2};
+                end
+                x{i} = char(obj.legend{i});
+            end
+
+            obj.ozonefig.Visible = 'on';
+            cla(obj.ozoneax)
+            hold(obj.ozoneax,'on');
+            b = bar(obj.ozoneax,categorical(x),y);
+            title(obj.ozoneax,obj.ozonetitle,'Interpreter',obj.titleInterpreter);
+            legend(obj.ozoneax,ozonevars,'Location',"best");
+            ylabel(obj.ozoneax,obj.ylabel,'Interpreter',obj.labelInterpreter);
+            grid(obj.ozoneax,obj.grid);
+            ylim(obj.ozoneax,[0 max(var(3))+0.3]);
+            xcentr = vertcat(b.XEndPoints)';
+            text(obj.ozoneax,xcentr(:),y(:),num2str(y(:),'%.2f'),'HorizontalAlignment','center','VerticalAlignment','bottom');
+            hold(obj.ozoneax,'off');
         end
 
         function obj = saveplot(obj,name)
