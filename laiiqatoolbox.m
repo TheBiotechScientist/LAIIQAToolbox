@@ -155,7 +155,60 @@ classdef laiiqatoolbox < handle
         end
 
         function obj = plotozonecalc(obj)
+            if isempty(obj.fixeddata)
+                disp('Variable fixeddata vacía. Ejecute plotfiles primero.');
+            else
+                ozonevars = ["Consumido","Residual","Total"];
 
+                if isequal(obj.ozoneUnits,'g/L')
+                    u = 1000;
+                elseif isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
+                    u = 1;
+                else
+                    u = 0;
+                end
+
+                if isequal(u,0)
+                    disp('Unidades incorrectas. Opciones validas: g/L | g/Nm^3 | g/m^3');
+                else
+                    for i=1:length(obj.fixeddata)
+                        residual = trapz(obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:))/u;
+                        consumed = (max(obj.fixeddata{i}(1,:))*max(obj.fixeddata{i}(2,:)))/u - residual;
+                        total = residual + consumed;
+                        if obj.xlabel == 'h'
+                            var(1) = consumed*60;
+                            var(2) = residual*60;
+                            var(3) = total*60;
+                        elseif obj.xlabel == 'seg'
+                            var(1) = consumed/60;
+                            var(2) = residual/60;
+                            var(3) = total/60;
+                        else
+                            var(1) = consumed;
+                            var(2) = residual;
+                            var(3) = total;
+                        end
+                        for j=1:3
+                            obj.ozoneresults{i,j} = {ozonevars(j), var(j)};
+                        end
+                    end
+                end
+            end
+
+            for i=1:length(obj.fixeddata)
+                for j=1:3
+                    y(i,j) = obj.ozoneresults{i,j}{2};
+                end
+                x{i} = obj.legend{i};
+            end
+
+            obj.ozonefig.Visible = 'on';
+            cla(obj.ozoneax)
+            b = bar(obj.ozoneax,categorical(x),y);
+            legend(ozonevars, 'Location',"best");
+            ylim(a,[0 max(ylim)+0.3]);
+            xcentr = vertcat(b.XEndPoints)';
+            text(xcentr(:),y(:),num2str(y(:),'%.2f'),'HorizontalAlignment','center','VerticalAlignment','bottom');
         end
 
         function obj = saveplot(obj,name)
