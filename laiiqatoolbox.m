@@ -150,6 +150,10 @@ classdef laiiqatoolbox < handle
             end
         end
 
+        function obj = plotozonecalc(obj)
+            
+        end
+
         function obj = saveplot(obj,name)
             cla(obj.ax, 'reset');
             obj.ax.Parent = obj.fig;
