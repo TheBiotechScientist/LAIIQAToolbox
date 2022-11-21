@@ -67,11 +67,12 @@ classdef laiiqatoolbox < handle
         function obj = openfiles(obj)
             clear obj.rawdata
             clear obj.fixeddata
-            clear obj.legend
+            % clear obj.legend
             clear obj.file
             clear pathfile
             clear obj.ozoneresults
             clear onj.defaultlegend
+
 
             [obj.file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
 
