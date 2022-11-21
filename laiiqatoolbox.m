@@ -198,7 +198,7 @@ classdef laiiqatoolbox < handle
                 for j=1:3
                     y(i,j) = obj.ozoneresults{i,j}{2};
                 end
-                x{i} = obj.legend{i};
+                x{i} = char(obj.legend{i});
             end
 
             obj.ozonefig.Visible = 'on';
