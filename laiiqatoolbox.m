@@ -65,7 +65,8 @@ classdef laiiqatoolbox < handle
         end
 
         function obj = openfiles(obj)
-
+            clear obj.file
+            clear pathfile
             [obj.file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
 
             if isequal(obj.file,0)
@@ -74,11 +75,9 @@ classdef laiiqatoolbox < handle
                 clear obj.rawdata
                 clear obj.fixeddata
                 % clear obj.legend
-                clear obj.file
-                clear pathfile
                 clear obj.ozoneresults
                 clear onj.defaultlegend
-                
+
                 if length(string(obj.file)) == 1
                   obj.file = string(obj.file);
                   obj.defaultlegend{1} = erase(obj.file,".mat");
