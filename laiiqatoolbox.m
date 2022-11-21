@@ -33,6 +33,8 @@ classdef laiiqatoolbox < handle
         ax;% = axes;
         fig2;
         ax2;
+        ozonefig;
+        ozoneax;
         file;
         defaultlegend;
     end
@@ -42,6 +44,8 @@ classdef laiiqatoolbox < handle
         function obj = laiiqatoolbox()
             obj.fig = figure('Visible', 'off');
             obj.ax = axes;
+            obj.ozonefig = figure('Visible','off');
+            obj.ozoneax = axes('Parent',obj.ozonefig);
             obj.title = "Cinética de Ozonización";
             obj.xlabel = 'min';
             obj.xk = {1};
@@ -151,7 +155,7 @@ classdef laiiqatoolbox < handle
         end
 
         function obj = plotozonecalc(obj)
-            
+
         end
 
         function obj = saveplot(obj,name)
