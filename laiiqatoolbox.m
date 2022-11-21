@@ -205,11 +205,16 @@ classdef laiiqatoolbox < handle
 
             obj.ozonefig.Visible = 'on';
             cla(obj.ozoneax)
+            hold(obj.ozoneax,'on');
             b = bar(obj.ozoneax,categorical(x),y);
-            legend(ozonevars, 'Location',"best");
-            ylim(a,[0 max(ylim)+0.3]);
+            title(obj.ozoneax,obj.ozonetitle,'Interpreter',obj.titleInterpreter);
+            legend(obj.ozoneax,ozonevars,'Location',"best");
+            ylabel(obj.ozoneax,obj.ylabel,'Interpreter',obj.labelInterpreter);
+            grid(obj.ozoneax,obj.grid);
+            ylim(obj.ozoneax,[0 max(var(3))+0.3]);
             xcentr = vertcat(b.XEndPoints)';
-            text(xcentr(:),y(:),num2str(y(:),'%.2f'),'HorizontalAlignment','center','VerticalAlignment','bottom');
+            text(obj.ozoneax,xcentr(:),y(:),num2str(y(:),'%.2f'),'HorizontalAlignment','center','VerticalAlignment','bottom');
+            hold(obj.ozoneax,'off');
         end
 
         function obj = saveplot(obj,name)
