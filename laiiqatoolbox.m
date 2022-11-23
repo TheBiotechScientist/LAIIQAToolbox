@@ -51,7 +51,7 @@ classdef laiiqatoolbox < handle
             obj.xlabel = 'min';
             obj.xk = {1};
             obj.xf = {'end'};
-            obj.ylabel = "Concentración [g/L]";
+            obj.ylabel = 'default'; % 'Concentración [ozoneUnits]'
             obj.grid = 'on';
             obj.LineWidth = 0.5;
             obj.legend = {'default'};
