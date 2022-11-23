@@ -10,7 +10,7 @@ classdef laiiqatoolbox < handle
     properties (Access = public)
         rawdata;
         fixeddata;
-        title; % = "Cinética de Ozonización";
+        fixedtitle; % = "Cinética de Ozonización";
         ozonetitle;
         xlabel; % = 'min';
         xk; % multiplicador para x
@@ -30,8 +30,8 @@ classdef laiiqatoolbox < handle
     end
 
     properties (Access = private)
-        fig;% = figure('visible','off');
-        ax;% = axes;
+        fixedfig;% = figure('visible','off');
+        fixedax;% = axes;
         ozonefig;
         ozoneax;
         file;
@@ -41,11 +41,11 @@ classdef laiiqatoolbox < handle
     methods
 
         function obj = laiiqatoolbox()
-            obj.fig = figure('Visible', 'off');
-            obj.ax = axes;
+            obj.fixedfig = figure('Visible', 'off');
+            obj.fixedax = axes('Parent',obj.fixedfig);
             obj.ozonefig = figure('Visible','off');
             obj.ozoneax = axes('Parent',obj.ozonefig);
-            obj.title = "Cinética de Ozonización";
+            obj.fixedtitle = "Cinética de Ozonización";
             obj.ozonetitle = "Consumo de Ozono";
             obj.xlabel = 'min';
             obj.xk = {1};
@@ -67,7 +67,7 @@ classdef laiiqatoolbox < handle
         function obj = openfiles(obj)
             clear obj.file
             clear pathfile
-            [obj.file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo', 'MultiSelect', 'on');
+            [obj.file, pathfile] = uigetfile({'*.mat'},'Seleccionar archivo','MultiSelect','on');
 
             if isequal(obj.file,0)
                 disp('No se seleccionó ningun archivo.');
@@ -122,10 +122,15 @@ classdef laiiqatoolbox < handle
                 if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend)
                     obj.legend = obj.defaultlegend;
                 end
-                obj.fig.Visible = 'on';
-                cla(obj.ax);
-                obj.ax.Parent = obj.fig; % = axes;
-                hold(obj.ax,'on');
+                try
+                    obj.fixedfig.Visible = 'on';
+                catch
+                    obj.fixedfig = figure;
+                    obj.fixedax = axes('Parent',obj.fixedfig);
+                end
+                cla(obj.fixedax);
+                % obj.fixedax.Parent = obj.fixedfig; % = axes;
+                hold(obj.fixedax,'on');
                 for i=1:length(obj.fixeddata)
                     obj.fixeddata{i}(1,:) = obj.fixeddata{i}(1,:)/t;
                     obj.fixeddata{i} = obj.fixeddata{i}(:,find(obj.fixeddata{i}(1,:)==60/t):end);
@@ -138,19 +143,29 @@ classdef laiiqatoolbox < handle
                     else
                         obj.fixeddata{i} = obj.fixeddata{i}(:,1:find(obj.fixeddata{i}(1,:)==obj.xf{i}));
                     end
-                    plot(obj.ax, obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:), 'LineWidth', obj.LineWidth);
+                    plot(obj.fixedax, obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:), 'LineWidth', obj.LineWidth);
                 end
-                title(obj.ax,obj.title, 'Interpreter', obj.titleInterpreter);
-                xlabel(obj.ax,"Tiempo (" + obj.xlabel + ")",'Interpreter',obj.labelInterpreter);
-                ylabel(obj.ax,obj.ylabel,'Interpreter',obj.labelInterpreter);
-                grid(obj.ax,obj.grid);
-                if isempty(obj.legend)
-                    legend(obj.ax,'off');
+                title(obj.fixedax,obj.fixedtitle, 'Interpreter', obj.titleInterpreter);
+                if isempty(obj.xlabel)
+                    xlabel(obj.fixedax,'off');
                 else
-                    legend(obj.ax,'on');
-                    legend(obj.ax,obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
+                    xlabel(obj.fixedax,'on');
+                    xlabel(obj.fixedax,xlabeltitle,'Interpreter',obj.labelInterpreter);
                 end
-                hold(obj.ax,'off');
+                if isempty(obj.ylabel)
+                    ylabel(obj.fixedax,'off');
+                else
+                    ylabel(obj.fixedax,'on');
+                    ylabel(obj.fixedax,ylabeltitle,'Interpreter',obj.labelInterpreter);
+                end
+                grid(obj.fixedax,obj.grid);
+                if isempty(obj.legend)
+                    legend(obj.fixedax,'off');
+                else
+                    legend(obj.fixedax,'on');
+                    legend(obj.fixedax,obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
+                end
+                hold(obj.fixedax,'off');
             end
         end
 
