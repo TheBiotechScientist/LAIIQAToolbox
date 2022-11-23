@@ -217,27 +217,47 @@ classdef laiiqatoolbox < handle
                         end
                     end
                 end
-            end
-
-            for i=1:length(obj.fixeddata)
-                for j=1:3
-                    y(i,j) = obj.ozoneresults{i,j}{2};
+                for i=1:length(obj.fixeddata)
+                    for j=1:3
+                        y(i,j) = obj.ozoneresults{i,j}{2};
+                    end
+                    x{i} = char(obj.legend{i});
                 end
-                x{i} = char(obj.legend{i});
-            end
 
-            obj.ozonefig.Visible = 'on';
-            cla(obj.ozoneax)
-            hold(obj.ozoneax,'on');
-            b = bar(obj.ozoneax,categorical(x),y);
-            title(obj.ozoneax,obj.ozonetitle,'Interpreter',obj.titleInterpreter);
-            legend(obj.ozoneax,ozonevars,'Location',"best");
-            ylabel(obj.ozoneax,obj.ylabel,'Interpreter',obj.labelInterpreter);
-            grid(obj.ozoneax,obj.grid);
-            ylim(obj.ozoneax,[0 max(var(3))+0.3]);
-            xcentr = vertcat(b.XEndPoints)';
-            text(obj.ozoneax,xcentr(:),y(:),num2str(y(:),'%.2f'),'HorizontalAlignment','center','VerticalAlignment','bottom');
-            hold(obj.ozoneax,'off');
+                try
+                    obj.ozonefig.Visible = 'on';
+                catch
+                    obj.ozonefig = figure;
+                    obj.ozoneax = axes('Parent',obj.ozonefig);
+                end
+
+                cla(obj.ozoneax)
+                hold(obj.ozoneax,'on');
+                b = bar(obj.ozoneax,categorical(x),y);
+                if isempty(obj.ozonetitle)
+                    title(obj.ozoneax,'off');
+                else
+                    title(obj.ozoneax,'on');
+                    title(obj.ozoneax,obj.ozonetitle,'Interpreter',obj.titleInterpreter);
+                end
+                legend(obj.ozoneax,ozonevars,'Location',"best");
+                if isempty(obj.ylabel)
+                    ylabel(obj.ozoneax,'off');
+                else
+                    ylabel(obj.ozoneax,'on');
+                    ylabel(obj.ozoneax,ylabeltitle,'Interpreter',obj.labelInterpreter);
+                end
+                grid(obj.ozoneax,obj.grid);
+                ylim(obj.ozoneax,[0 max(var(3))*1.1]);
+                xcentr = vertcat(b.XEndPoints)';
+                if isequal(obj.ozoneUnits,'g/m^3') | isequal(obj.ozoneUnits,'g/Nm^3')
+                    value = num2str(y(:),'%.1f');
+                else
+                    value = num2str(y(:),'%.2f');
+                end
+                text(obj.ozoneax,xcentr(:),y(:),value,'HorizontalAlignment','center','VerticalAlignment','bottom');
+                hold(obj.ozoneax,'off');
+            end
         end
 
         function obj = saveplot(obj,name)
