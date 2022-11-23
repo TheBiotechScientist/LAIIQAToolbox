@@ -120,6 +120,11 @@ classdef laiiqatoolbox < handle
                 end
 
                 if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend)
+                xlabeltitle = char(sprintf("Tiempo (%s)",obj.xlabel));
+                if isequal(obj.ylabel,'default')
+                    ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneUnits));
+                else
+                end
                     obj.legend = obj.defaultlegend;
                 end
                 try
@@ -181,6 +186,11 @@ classdef laiiqatoolbox < handle
                     u = 1;
                 else
                     u = 0;
+                end
+
+                if isequal(obj.ylabel,'default')
+                    ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneUnits));
+                else
                 end
 
                 if isequal(u,0)
