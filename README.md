@@ -4,6 +4,9 @@
 <!-- ![image_0.png](README_images/image_0.png) -->
 [![View LAIIQAToolbox on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://la.mathworks.com/matlabcentral/fileexchange/120218-laiiqatoolbox)
 
+## Citar como
+Francisco Javier Morales Martínez (2022). LAIIQAToolbox (https://github.com/TheBiotechScientist/LAIIQAToolbox/releases/tag/v1.2.1), GitHub. Recuperado November 23, 2022.
+
 # Novedades!
 
    - ***Propiedad*** `title` cambiada a `fixedtitle` para consistencia con los nombres de variable.
