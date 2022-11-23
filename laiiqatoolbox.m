@@ -260,34 +260,59 @@ classdef laiiqatoolbox < handle
             end
         end
 
-        function obj = saveplot(obj,name)
-            cla(obj.ax, 'reset');
-            obj.ax.Parent = obj.fig;
-            hold(obj.ax,'on');
-            for i=1:length(obj.fixeddata)
-                plot(obj.ax,obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:));
-            end
-            title(obj.ax,obj.title, 'Interpreter', obj.titleInterpreter);
-            xlabel(obj.ax,"Tiempo (" + obj.xlabel + ")", 'Interpreter', obj.labelInterpreter);
-            ylabel(obj.ax,obj.ylabel,'Interpreter', obj.labelInterpreter);
-            grid(obj.ax,obj.grid);
-            if isempty(obj.legend)
-                legend(obj.ax,'off');
+        function obj = saveplot(obj,name,figaxes)
+            if isempty(obj.rawdata)
+                disp("No se han cargado archivos aún. Ejecute openfiles primero.");
+            elseif isempty(obj.fixeddata)
+                disp("No se ha generado ningún gráfico. Ejecute plotfiles primero.");
             else
-                legend(obj.ax,'on');
-                legend(obj.ax,obj.legend, 'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
-            end
-            hold(obj.ax,'off');
-            if contains(name,'.pdf')
-                exportgraphics(obj.fig,name,'ContentType','vector');
-            elseif contains(name,'.png') | contains(name,'.jpg') | contains(name,'.jpeg')
-                exportgraphics(obj.fig,name,'Resolution',obj.imageResolution);
-            elseif contains(name,'.fig')
-                savefig(obj.fig,name);
-            elseif contains(name,'.svg') | contains(name,'.eps') | contains(name,'.tif')
-                saveas(obj.fig,name)
-            else
-                disp("Especifica un formato válido: .png, .jpg, .jpeg, .pdf, .eps, .tif, .svg, .fig. Ejemplo: 'mifigura.pdf'");
+              if ~exist('figaxes','var')
+                  figaxes = 'fixed';
+              end
+              if isequal(figaxes,'fixed')
+                  figobj = obj.fixedfig;
+                  axobj = obj.fixedax;
+              elseif isequal(figaxes,'ozone')
+                  figobj = obj.ozonefig;
+                  axobj = obj.ozoneax;
+              end
+              % try
+              %     figobj.Visible = 'on';
+              % catch
+              %     figobj = figure;
+              %     axobj = axes('Parent',figobj);
+              % end
+
+              % cla(axobj);
+              % hold(axobj,'on');
+              % for i=1:length(obj.fixeddata)
+              %     plot(axobj,obj.fixeddata{i}(1,:),obj.fixeddata{i}(2,:));
+              % end
+              % title(axobj,obj.fixedtitle, 'Interpreter', obj.titleInterpreter);
+
+              % if figaxes == 'ozone'
+              % else
+              %     xlabel(axobj,"Tiempo (" + obj.xlabel + ")", 'Interpreter', obj.labelInterpreter);
+              % end
+              % grid(axobj,obj.grid);
+              % if isempty(obj.legend)
+              %     legend(axobj,'off');
+              % else
+              %     legend(axobj,'on');
+              %     legend(axobj,obj.legend, 'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
+              % end
+              % hold(axobj,'off');
+              if contains(name,'.pdf')
+                  exportgraphics(figobj,name,'ContentType','vector');
+              elseif contains(name,'.png') | contains(name,'.jpg') | contains(name,'.jpeg') | contains(name,'.bmp')
+                  exportgraphics(figobj,name,'Resolution',obj.imageResolution);
+              elseif contains(name,'.fig')
+                  savefig(figobj,name);
+              elseif contains(name,'.svg') | contains(name,'.eps') | contains(name,'.tif')
+                  saveas(figobj,name);
+              else
+                  disp("Especifica un formato válido: .png, .jpg, .jpeg, .bmp,.pdf, .eps, .svg, .tif, .fig. Ejemplo: 'mifigura.pdf'");
+              end
             end
         end
 
