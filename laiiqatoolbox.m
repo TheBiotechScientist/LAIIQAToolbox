@@ -98,10 +98,6 @@ classdef laiiqatoolbox < handle
                         obj.defaultlegend{i} = "$"+obj.defaultlegend{i}+"$";
                     end
                 end
-                %for i=1:length(obj.file)
-                %  obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
-                %    % obj.legend{i} = replace(lgnd{i},'_','-');
-                %end
             end
         end
 

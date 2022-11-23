@@ -6,10 +6,10 @@
 
 # Novedades!
 
-   - ***Propiedad*** `title` cambiada a \hyperref{BCD4EF66}{`fixedtitle`} para consistencia con los nombres de variable.
-   - ***Propiedad*** \hyperref{A3381635}{`ozonetitle`} para el titulo del gráfico de barras de los cálculos de ozono.
-   - ***Método*** \hyperref{A3381635}{`plotozonecalc`} para crear gráfico de barras de los resultados de ozono consumido, residual y total para cada línea de datos.
-   -  Se pueden cerrar las ventanas de los gráficos.
+   - ***Propiedad*** `title` cambiada a `fixedtitle` para consistencia con los nombres de variable.
+   - ***Propiedad*** `ozonetitle` para el titulo del gráfico de barras de los cálculos de ozono.
+   - ***Método*** `plotozonecalc` para crear gráfico de barras de los resultados de ozono consumido, residual y total para cada línea de datos.
+   - Se pueden cerrar las ventanas de los gráficos.
 
 
 
@@ -51,14 +51,14 @@
 
 # Propiedades del objeto `laiiqatoolbox`
 
-   -  `rawdata` : Datos "crudos", sin tratamiento, que contiene las filas de tiempo (1/100 ***seg***)  y concentración de ozono (***g/m^3***) del archivo `.mat`.
-   -  `fixeddata` : Datos "ajustados", recortados para quitar los primeros datos de estabilización de la concentración de ozono y para comenzar el ozonograma desde una concentración igual o cercana a cero. Convierte los datos de tiempo a minutos por default.
+   -  `rawdata` : Datos *"crudos"*, sin tratamiento, que contiene las filas de tiempo (1/100 ***seg***)  y concentración de ozono (***g/m^3***) del archivo `.mat`.
+   -  `fixeddata` : Datos *"ajustados"*, recortados para quitar los primeros datos de estabilización de la concentración de ozono y para comenzar el ozonograma desde una concentración igual o cercana a cero. Convierte los datos de tiempo a minutos por default.
    -  `fixedtitle` : Modifica o quita el título del gráfico de los datos ajustados. **Default**: `'Cinética de Ozonización'`.
-   -  `ozonetitle` : Modifica o quita el título del gráfico de barras del consumo de ozono. **Default**: `"Consumo de Ozono"`.
+   -  `ozonetitle` : Modifica o quita el título del gráfico de barras del consumo de ozono. **Default**: `'Consumo de Ozono'`.
    -  `xlabel` : Modifica los datos de tiempo. **Opciones**: `'min'` (default) | `'seg'` | `'h'`.
    -  `xk` : Multiplica los valores de tiempo, ***x***, de cada linea de datos por una constante ***k***.
    -  `xf` : Establece un valor final de tiempo, ***x final***, para cada linea de datos, de acuerdo a las unidades establecidas en  `xlabel`. **Opciones**: `'end'` (default) | `<x>` (cualquier valor de tiempo). Ejemplo: `miobjeto.xf = { 60 'end' 45 ...etc }`. Con `xlabel = 'min'`, `60` y `45` corresponden a minutos.
-   -  `ylabel` : Cambia el titulo del eje ***y***. Default: `"Concentración [g/L]"`.
+   -  `ylabel` : Cambia el titulo del eje ***y***. Default: `'Concentración [g/L]''`.
    -  `grid` : Activa o desactiva las rejillas del gráfico. **Opciones**: `'on'` (default) `|` `'off'` | `'minor'`.
    -  `LineWidth` :Cambia el grosor de linea para todas las lineas de datos. Default = `11`.
    -  `legend` : Cambia o quita la legenda para cada linea de datos. **Opciones**: `{'default'}` (default) | `{ "<nombre de leyenda 1>"  "<nombre de leyenda 2>"  ...etc }`. Ejemplo: `{'default'} `ó `{"Linea 1" "Linea 2" "Linea 3" ...etc }`. `default` pone de leyenda los nombres de archivos abiertos.
