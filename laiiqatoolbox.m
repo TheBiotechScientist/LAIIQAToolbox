@@ -12,6 +12,7 @@ classdef laiiqatoolbox < handle
         fixeddata;
         fixedtitle; % = "Cinética de Ozonización";
         ozonetitle;
+        ozoneUnits; % = 'g/L';
         xlabel; % = 'min';
         xk; % multiplicador para x
         xf; % valor de x final
@@ -25,7 +26,6 @@ classdef laiiqatoolbox < handle
         titleInterpreter; % = 'tex';
         labelInterpreter; % = 'tex';
         legendInterpreter; % = 'tex';
-        ozoneUnits; % = 'g/L';
         ozoneresults;
     end
 
@@ -47,6 +47,7 @@ classdef laiiqatoolbox < handle
             obj.ozoneax = axes('Parent',obj.ozonefig);
             obj.fixedtitle = "Cinética de Ozonización";
             obj.ozonetitle = "Consumo de Ozono";
+            obj.ozoneUnits = 'g/L';
             obj.xlabel = 'min';
             obj.xk = {1};
             obj.xf = {'end'};
@@ -61,7 +62,6 @@ classdef laiiqatoolbox < handle
             obj.titleInterpreter = 'tex';
             obj.labelInterpreter = 'tex';
             obj.legendInterpreter = 'tex';
-            obj.ozoneUnits = 'g/L';
         end
 
         function obj = openfiles(obj)
