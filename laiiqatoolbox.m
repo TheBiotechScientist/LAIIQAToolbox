@@ -54,7 +54,7 @@ classdef laiiqatoolbox < handle
             obj.ylabel = 'default'; % 'Concentración [ozoneUnits]'
             obj.grid = 'on';
             obj.LineWidth = 0.5;
-            obj.legend = {'default'};
+            obj.legend = {'default'}; % Nombres de archivos
             obj.legendFontSize = 8;
             obj.legendLocation = 'best';
             obj.imageResolution = 300;
