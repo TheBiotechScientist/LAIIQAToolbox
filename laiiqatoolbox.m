@@ -111,11 +111,11 @@ classdef laiiqatoolbox < handle
             if isempty(obj.fixeddata)
                 disp("No se han cargado archivos para graficar. Ejecute openfiles primero.");
             else
-                if obj.xlabel == 'min'
+                if isequal(obj.xlabel,'min')
                     t = 60;
-                elseif obj.xlabel == 'h'
+                elseif isequal(obj.xlabel,'h')
                     t = 3600;
-                elseif obj.xlabel == 'seg'
+                elseif isequal(obj.xlabel,'seg')
                     t = 1;
                 end
 
@@ -190,11 +190,11 @@ classdef laiiqatoolbox < handle
                         residual = trapz(obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:))/u;
                         consumed = (max(obj.fixeddata{i}(1,:))*max(obj.fixeddata{i}(2,:)))/u - residual;
                         total = residual + consumed;
-                        if obj.xlabel == 'h'
+                        if isequal(obj.xlabel,'h')
                             var(1) = consumed*60;
                             var(2) = residual*60;
                             var(3) = total*60;
-                        elseif obj.xlabel == 'seg'
+                        elseif isequal(obj.xlabel,'seg')
                             var(1) = consumed/60;
                             var(2) = residual/60;
                             var(3) = total/60;
@@ -281,11 +281,11 @@ classdef laiiqatoolbox < handle
                         residual = trapz(obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:))/u;
                         consumed = (max(obj.fixeddata{i}(1,:))*max(obj.fixeddata{i}(2,:)))/u - residual;
                         total = residual + consumed;
-                        if obj.xlabel == 'h'
+                        if isequal(obj.xlabel,'h')
                             var(1) = consumed*60;
                             var(2) = residual*60;
                             var(3) = total*60;
-                        elseif obj.xlabel == 'seg'
+                        elseif isequal(obj.xlabel,'seg')
                             var(1) = consumed/60;
                             var(2) = residual/60;
                             var(3) = total/60;
