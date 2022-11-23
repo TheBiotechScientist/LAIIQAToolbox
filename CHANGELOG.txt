@@ -1,11 +1,26 @@
-# v1.3.0 Enhancement - plotozonecalc
+# v1.3.6 Enhancement - plotozonecalc
 
-## Enhancement:
-  - Creado método `plotozonecalc` para crear gráfico de barras de los cálculos de ozono cosumido, residualy total.
-  - Creadas propiedades de objetos, `ozonefig` y `ozoneax`, para los gráficos generados por `plotozonecalc`.
+[![View LAIIQAToolbox on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://la.mathworks.com/matlabcentral/fileexchange/120218-laiiqatoolbox)
 
-## Métodos nuevos:
-  - `plotozonecalc` : Crea un gráfico de barras de los resultados de ozono consumido, residual y total.
+## Fixed:
+  - Corregido error con variables privadas `file` y `pathfile`.
+  - Corregido error al cerrar la ventana del objeto gráfico. Ahora si se cierra se crea uno nuevo.
+  - Corregido error al ejecutar `plotozonecalc` antes de `openfiles`.
+  - Corregido error al ejecutar `saveplot()` antes de `openfiles` o `plotfiles`.
+  - Corregido error al poner `legend = {}` o al poner un número de leyendas menor al número de archivos.
+  - Ajustados los valores numéricos en el gráfico de barras para `g/L` con 2 cifras decimales y para `g/Nm^3` con 1 cifra decimal.
+
+## New:
+  - Método `plotozonecalc` : Crea gráfico de barras de los resultados de ozono consumido, residual y total para cada línea de datos.
+  - Propiedades de objetos, `ozonefig` y `ozoneax`, para los gráficos generados por `plotozonecalc`.
+  - Propiedad `ozonetitle`.
+  - Método `saveplot()` ahora acepta los parámetros `fixed` (_default_) y `ozone` para seleccionar el gráfico a guardar.
+  - Ahora es posible quitar el `title`, `xlabel` y `ylabel`.
+  - `ylabel` inicia con valor `default`. Toma el valor de `ozoneUnits` (*"Concentración [ozoneUnits]"*).
+  - Propiedad `title` cambiada a `fixedtitle` para consistencia con los nombres de variable.
+  - `README.md` actualizado.
+  - `GettingStarted.mlx` actualizado.
+  - `example.mlx` actualizado.
 
 
 =============================================
