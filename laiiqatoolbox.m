@@ -10,6 +10,7 @@ classdef laiiqatoolbox < handle
     properties (Access = public)
         rawdata;
         fixeddata;
+        rawtitle; % = 'Datos sin ajustar'
         fixedtitle; % = "Cinética de Ozonización";
         ozonetitle;
         ozoneUnits; % = 'g/L';
@@ -30,6 +31,9 @@ classdef laiiqatoolbox < handle
     end
 
     properties (Access = private)
+        rawfig;
+        rawax;
+        rawtemp;
         fixedfig;% = figure('visible','off');
         fixedax;% = axes;
         ozonefig;
@@ -41,10 +45,13 @@ classdef laiiqatoolbox < handle
     methods
 
         function obj = laiiqatoolbox()
+            obj.rawfig = figure('Visible','off');
+            obj.rawax = axes('Parent',obj.rawfig);
             obj.fixedfig = figure('Visible', 'off');
             obj.fixedax = axes('Parent',obj.fixedfig);
             obj.ozonefig = figure('Visible','off');
             obj.ozoneax = axes('Parent',obj.ozonefig);
+            obj.rawtitle = 'Datos sin ajustar';
             obj.fixedtitle = "Cinética de Ozonización";
             obj.ozonetitle = "Consumo de Ozono";
             obj.ozoneUnits = 'g/L';
@@ -169,6 +176,66 @@ classdef laiiqatoolbox < handle
             end
         end
 
+        function obj = plotraw(obj)
+            if isempty(obj.rawdata)
+                disp("No se han cargado archivos para graficar o variable rawdata vacía. Ejecute openfiles primero.");
+            else
+                clear obj.rawtemp
+                obj.rawtemp = obj.rawdata;
+                if isequal(obj.xlabel,'min')
+                    t = 60;
+                elseif isequal(obj.xlabel,'h')
+                    t = 3600;
+                elseif isequal(obj.xlabel,'seg')
+                    t = 1;
+                end
+                if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend) | length(obj.legend)<length(obj.rawdata)
+                    obj.legend = obj.defaultlegend;
+                end
+                try
+                    obj.rawfig.Visible = 'on';
+                catch
+                    obj.rawfig = figure;
+                    obj.rawax = axes('Parent',obj.rawfig);
+                end
+                cla(obj.rawax);
+                % obj.rawax; % = axes;
+                hold(obj.rawax,'on');
+                for i=1:length(obj.rawtemp)
+                    obj.rawtemp{i}(1,:) = obj.rawtemp{i}(1,:)/t;
+                    obj.rawtemp{i}(1,:) = obj.rawtemp{i}(1,:)*obj.xk{i};
+                    obj.rawtemp{i}(1,:) = round(obj.rawtemp{i}(1,:),2);
+                    if isequal(obj.xf{i},'end')
+                        obj.rawtemp{i} = obj.rawtemp{i}(:,1:end);
+                    else
+                        obj.rawtemp{i} = obj.rawtemp{i}(:,1:find(obj.rawtemp{i}(1,:)==obj.xf{i}));
+                    end
+                    plot(obj.rawax, obj.rawtemp{i}(1,:), obj.rawtemp{i}(2,:), 'LineWidth', obj.LineWidth);
+                end
+                title(obj.rawax,obj.fixedtitle, 'Interpreter', obj.titleInterpreter);
+                if isempty(obj.xlabel)
+                    xlabel(obj.rawax,'off');
+                else
+                    xlabel(obj.rawax,'on');
+                    xlabel(obj.rawax,xlabeltitle,'Interpreter',obj.labelInterpreter);
+                end
+                if isempty(obj.ylabel)
+                    ylabel(obj.rawax,'off');
+                else
+                    ylabel(obj.rawax,'on');
+                    ylabel(obj.rawax,ylabeltitle,'Interpreter',obj.labelInterpreter);
+                end
+                grid(obj.rawax,obj.grid);
+                if isempty(obj.legend)
+                    legend(obj.rawax,'off');
+                else
+                    legend(obj.rawax,'on');
+                    legend(obj.rawax,obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
+                end
+                hold(obj.rawax,'off');
+            end % End if rawdata
+        end % End func. plotraw
+
         function obj = plotozonecalc(obj)
             if isempty(obj.fixeddata)
                 disp('Variable fixeddata vacía. Ejecute plotfiles primero.');
@@ -271,6 +338,9 @@ classdef laiiqatoolbox < handle
               elseif isequal(figaxes,'ozone')
                   figobj = obj.ozonefig;
                   axobj = obj.ozoneax;
+              elseif isequal(figaxes,'raw')
+                  figobj = obj.rawfig;
+                  axobj = obj.rawax;
               end
               % try
               %     figobj.Visible = 'on';
