@@ -1,5 +1,5 @@
 classdef laiiqatoolbox < handle
-    %% LAIIQATOOLBOX script v1.3.6
+    %% LAIIQATOOLBOX script v1.4.0
     %   Autor: F. Javier Morales Mtz.
     %   05/11/2022
     %   Matlab toolbox para ajustar y graficar los datos de los archivos
