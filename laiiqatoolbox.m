@@ -10,10 +10,11 @@ classdef laiiqatoolbox < handle
     properties (Access = public)
         rawdata;
         fixeddata;
+        ozoneresults;
         rawtitle; % = 'Datos sin ajustar'
         fixedtitle; % = "Cinética de Ozonización";
         ozonetitle;
-        ozoneUnits; % = 'g/L';
+        ozoneUnits; % = 'g/Nm^3';
         xlabel; % = 'min';
         xk; % multiplicador para x
         xf; % valor de x final
@@ -27,7 +28,6 @@ classdef laiiqatoolbox < handle
         titleInterpreter; % = 'tex';
         labelInterpreter; % = 'tex';
         legendInterpreter; % = 'tex';
-        ozoneresults;
     end
 
     properties (Access = private)
