@@ -45,16 +45,16 @@ classdef laiiqatoolbox < handle
     methods
 
         function obj = laiiqatoolbox()
-            obj.rawfig = figure('Visible','off');
-            obj.rawax = axes('Parent',obj.rawfig);
             obj.fixedfig = figure('Visible', 'off');
             obj.fixedax = axes('Parent',obj.fixedfig);
+            obj.rawfig = figure('Visible','off');
+            obj.rawax = axes('Parent',obj.rawfig);
             obj.ozonefig = figure('Visible','off');
             obj.ozoneax = axes('Parent',obj.ozonefig);
-            obj.rawtitle = 'Datos sin ajustar';
+            obj.rawtitle = "Datos sin ajustar";
             obj.fixedtitle = "Cinética de Ozonización";
             obj.ozonetitle = "Consumo de Ozono";
-            obj.ozoneUnits = 'g/L';
+            obj.ozoneUnits = 'g/Nm^3';
             obj.xlabel = 'min';
             obj.xk = {1};
             obj.xf = {'end'};
@@ -79,6 +79,7 @@ classdef laiiqatoolbox < handle
             if isequal(obj.file,0)
                 disp('No se seleccionó ningun archivo.');
             else
+                clear obj.data
                 clear obj.rawdata
                 clear obj.fixeddata
                 % clear obj.legend
@@ -88,7 +89,7 @@ classdef laiiqatoolbox < handle
                 if length(string(obj.file)) == 1
                   obj.file = string(obj.file);
                   obj.defaultlegend{1} = erase(obj.file,".mat");
-                  obj.rawdata{1} = importdata(fullfile(pathfile, obj.file));
+                  obj.data{1} = importdata(fullfile(pathfile, obj.file));
                   % obj.xf{1} = 'end';
                 elseif length(string(obj.file)) > 1
                     for i=1:length(obj.file)
@@ -97,7 +98,7 @@ classdef laiiqatoolbox < handle
                         % obj.defaultlegend{i} = string(obj.defaultlegend{i});
                         obj.xf{i} = 'end';
                         obj.xk{i} = 1;
-                        obj.rawdata{i} = importdata(fullfile(pathfile, obj.file{i}));
+                        obj.data{i} = importdata(fullfile(pathfile, obj.file{i}));
                     end
                 end
                 if isequal(obj.legendInterpreter,'latex')
@@ -105,14 +106,15 @@ classdef laiiqatoolbox < handle
                         obj.defaultlegend{i} = "$"+obj.defaultlegend{i}+"$";
                     end
                 end
+                obj.rawdata = obj.data;
             end
         end
 
         function obj = plotfiles(obj)
             clear obj.fixeddata;
-            obj.fixeddata = obj.rawdata;
-            if isempty(obj.fixeddata)
-                disp("No se han cargado archivos para graficar. Ejecute openfiles primero.");
+            obj.fixeddata = obj.data;
+            if isempty(obj.data) | isempty(obj.fixeddata)
+                disp("No se han cargado archivos para graficar o variable fixeddata vacía. Ejecute openfiles primero.");
             else
                 if isequal(obj.xlabel,'min')
                     t = 60;
