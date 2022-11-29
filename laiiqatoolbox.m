@@ -31,9 +31,9 @@ classdef laiiqatoolbox < handle
     end
 
     properties (Access = private)
+        data;
         rawfig;
         rawax;
-        rawtemp;
         fixedfig;% = figure('visible','off');
         fixedax;% = axes;
         ozonefig;
