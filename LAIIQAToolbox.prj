@@ -7,7 +7,7 @@
     <param.summary>Matlab toolbox para graficar archivos .mat del proceso de ozonización. LAIIQA - ESIQIE - IPN.</param.summary>
     <param.description>Matlab toolbox para ajustar y graficar los datos de los archivos .mat generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
     <param.screenshot>${PROJECT_ROOT}\splash.png</param.screenshot>
-    <param.version>1.3.6</param.version>
+    <param.version>1.4.1</param.version>
     <param.output>${PROJECT_ROOT}\LAIIQAToolbox.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -112,11 +112,13 @@ laiiqatoolboxv2.0_backup.m</param.exclude.filters>
       <file>${PROJECT_ROOT}</file>
     </fileset.rootdir>
     <fileset.rootfiles>
+      <file>${PROJECT_ROOT}\arduino.m</file>
       <file>${PROJECT_ROOT}\CHANGELOG.txt</file>
       <file>${PROJECT_ROOT}\demos.xml</file>
       <file>${PROJECT_ROOT}\doc</file>
       <file>${PROJECT_ROOT}\info.xml</file>
       <file>${PROJECT_ROOT}\laiiqatoolbox.m</file>
+      <file>${PROJECT_ROOT}\signal</file>
       <file>${PROJECT_ROOT}\splash.png</file>
       <file>${PROJECT_ROOT}\testfiles</file>
     </fileset.rootfiles>
