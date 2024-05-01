@@ -6,13 +6,15 @@
 
 ---
 
-# Novedades v1.4.1
+# Novedades v1.5.0
 - ***Propiedad*** `title` cambiada a `fixedtitle` para consistencia con los nombres de variable.
 - ***Propiedad*** `ozonetitle` para el titulo del gráfico de barras de los cálculos de ozono.
 - ***Método*** `plotozonecalc` para crear gráfico de barras de los resultados de ozono consumido, residual y total para cada línea de datos.
 - Se pueden cerrar las ventanas de los gráficos.
 - ***Método*** `plotraw` para crear gráfico de los datos sin ajuste (datos originales).
-- ***Propiedad*** `rawtitle` para el titulo generado por el método `plotraw`.
+- ***Propiedad*** `rawtitle` para el titulo del gráfico generado por el método `plotraw`.
+- ***Método*** `plotonly` para crear gráfico individual o comparativo de datos ajustados (`fixeddata`) y sin ajustar (`rawdata`).
+- ***Propiedad*** `onlytitle` para el titulo del gráfico generado por el método `plotonly`.
 
 ---
 

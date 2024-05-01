@@ -1,7 +1,7 @@
 classdef laiiqatoolbox < handle
-    %% LAIIQATOOLBOX script v1.4.1
+    %% LAIIQATOOLBOX script v2.0.0
     %   Autor: F. Javier Morales Mtz.
-    %   05/11/2022
+    %   01/05/2024
     %   Matlab toolbox para ajustar y graficar los datos de los archivos
     %   generados del proceso de ozonización en el Laboratorio
     %   de Investigación en Ingeniería Química Ambiental (LAIIQA)
@@ -13,6 +13,8 @@ classdef laiiqatoolbox < handle
         ozoneresults;
         rawtitle; % = 'Datos sin ajustar'
         fixedtitle; % = "Cinética de Ozonización";
+        onlytitle; % = '';
+        % signaltitle;
         ozonetitle;
         ozoneUnits; % = 'g/Nm^3';
         xlabel; % = 'min';
@@ -36,23 +38,39 @@ classdef laiiqatoolbox < handle
         rawax;
         fixedfig;% = figure('visible','off');
         fixedax;% = axes;
+        onlyfig;
+        % onlyax;
         ozonefig;
         ozoneax;
+        % signalfig;
+        % signalax;
+        % startButton;
+        % searchButton;
         file;
         defaultlegend;
+        % ports;
+        % dropdown;
+        % adino;
     end
 
     methods
 
         function obj = laiiqatoolbox()
-            obj.fixedfig = figure('Visible', 'off');
+            obj.fixedfig = figure('Visible','off');
             obj.fixedax = axes('Parent',obj.fixedfig);
             obj.rawfig = figure('Visible','off');
             obj.rawax = axes('Parent',obj.rawfig);
             obj.ozonefig = figure('Visible','off');
             obj.ozoneax = axes('Parent',obj.ozonefig);
+            obj.onlyfig = figure('Visible','off');
+            obj.onlyax = axes('Parent',obj.onlyfig);
+            % obj.signalfig = uifigure('Name','Ozonegraph','Visible','off');
+            % obj.signalfig.Position(3) = obj.signalfig.Position(3)*1.42;
+            % obj.signalax = uiaxes('Parent',obj.signalfig,'Position',[obj.signalfig.Position(3)*0.2818 10 obj.signalfig.Position(3)*0.70425 obj.signalfig.Position(4)-20]);
             obj.rawtitle = "Datos sin ajustar";
             obj.fixedtitle = "Cinética de Ozonización";
+            obj.onlytitle = 'default';
+            % obj.signaltitle = '';
             obj.ozonetitle = "Consumo de Ozono";
             obj.ozoneUnits = 'g/Nm^3';
             obj.xlabel = 'min';
@@ -108,9 +126,9 @@ classdef laiiqatoolbox < handle
                 end
                 obj.rawdata = obj.data;
             end
-        end
+        end % func openfiles
 
-        function obj = plotfiles(obj)
+        function obj = plotfixed(obj)
             clear obj.fixeddata;
             obj.fixeddata = obj.data;
             if isempty(obj.data) | isempty(obj.fixeddata)
@@ -192,7 +210,7 @@ classdef laiiqatoolbox < handle
                     hold(obj.fixedax,'off');
                 end % if iseq. (u,0)
             end % if isempt. fixeddata
-        end % func. plotfiles
+        end % func. plotfixed
 
         function obj = plotraw(obj)
             if isempty(obj.data)
@@ -273,6 +291,106 @@ classdef laiiqatoolbox < handle
                 end % if isequ. (u, 0)
             end % if isempt rawdata
         end % func. plotraw
+
+        function obj = plotonly(obj,number,typedata)
+            if ~exist('number','var')
+                number = 1;
+            end
+            if ~exist('typedata','var')
+                typedata = 'fixed';
+            end
+            if isequal(typedata,'fixed') | isequal(typedata,'raw') | isequal(typedata,'both')
+                if isequal(typedata,'raw') & isempty(obj.rawdata)
+                    disp("No se ha ejecutado plotfixed o no hay datos en rawdata. Ejecute plotfixed primero.");
+                elseif isequal(typedata,'fixed') & isempty(obj.fixeddata)
+                    disp("No se ha ejecutado openfiles o no hay datos en fixeddata. Ejecute openfiles primero.");
+                elseif isequal(typedata,'both') & isempty(obj.rawdata) | isempty(obj.fixeddata)
+                    disp("No se ha ejecutado openfiles o no hay datos en rawdata y fixeddata. Ejecute openfiles primero.");
+                else
+                    if isequal(obj.ozoneUnits,'g/L')
+                        u = 1000;
+                    elseif isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
+                        u = 1;
+                    else
+                        u = 0;
+                    end
+                    if isequal(u,0)
+                        disp('Unidades de concentración de ozono incorrectas. Opciones validas: g/L | g/Nm^3 | g/m^3');
+
+                    else
+                        % if isequal(obj.xlabel,'min')
+                        %     t = 60;
+                        % elseif isequal(obj.xlabel,'h')
+                        %     t = 3600;
+                        % elseif isequal(obj.xlabel,'seg')
+                        %     t = 1;
+                        % end
+
+                        if isequal(obj.onlytitle,'default') & isequal(typedata,'fixed') | isequal(typedata,'raw')
+                            titleonly = char(sprintf("%sdata\\{%d\\}",typedata,number));
+                        elseif isequal(obj.onlytitle,'default') & isequal(typedata,'both')
+                            titleonly = char(sprintf("fixeddata & rawdata \\{%d\\}",number));
+                        else
+                            titleonly = obj.onlytitle;
+                        end
+
+                        xlabeltitle = char(sprintf("Tiempo (%s)",obj.xlabel));
+
+                        if isequal(obj.ylabel,'default')
+                            ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneUnits));
+                        end
+
+                        if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend) | ~isequal(obj.legend,{}) & length(obj.legend)<length(obj.fixeddata)
+                            obj.legend = obj.defaultlegend;
+                        end
+
+                        try
+                            obj.onlyfig.Visible = 'on';
+                        catch
+                            obj.onlyfig = figure;
+                            obj.onlyax = axes('Parent',obj.onlyfig);
+                        end
+                        cla(obj.onlyax);
+                        hold(obj.onlyax,'on');
+                        if isequal(typedata,'fixed')
+                            plot(obj.onlyax,obj.fixeddata{number}(1,:),obj.fixeddata{number}(2,:), 'LineWidth', obj.LineWidth);
+                            onlylegend = obj.legend{number};
+                        elseif isequal(typedata,'raw')
+                            plot(obj.onlyax,obj.rawdata{number}(1,:),obj.rawdata{number}(2,:), 'LineWidth', obj.LineWidth);
+                            onlylegend = obj.legend{number};
+                        elseif isequal(typedata,'both')
+                            plot(obj.onlyax,obj.rawdata{number}(1,:),obj.rawdata{number}(2,:), 'LineWidth', obj.LineWidth);
+                            plot(obj.onlyax,obj.fixeddata{number}(1,:),obj.fixeddata{number}(2,:), 'LineWidth', obj.LineWidth);
+                            onlylegend = {obj.legend{number} 'fixed'};
+                        end
+                        title(obj.onlyax,titleonly, 'Interpreter', obj.titleInterpreter);
+                        if isempty(obj.xlabel)
+                            xlabel(obj.onlyax,'off');
+                        else
+                            xlabel(obj.onlyax,'on');
+                            xlabel(obj.onlyax,xlabeltitle,'Interpreter',obj.labelInterpreter);
+                        end
+                        if isempty(obj.ylabel)
+                            ylabel(obj.onlyax,'off');
+                        else
+                            ylabel(obj.onlyax,'on');
+                            ylabel(obj.onlyax,ylabeltitle,'Interpreter',obj.labelInterpreter);
+                        end
+                        grid(obj.onlyax,obj.grid);
+                        if isempty(obj.legend)
+                            legend(obj.onlyax,'off');
+                        else
+                            legend(obj.onlyax,'on');
+                            legend(obj.onlyax,onlylegend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
+                        end
+                        hold(obj.onlyax,'off');
+                    end % if iseq. (u,0)
+                    % end % if notequal typedata fixed, raw, both
+                end % if iseq. typedata raw,fixed,both
+            else
+                disp("Tipo de variable incorrecta. Opciones válidas: 'fixed' | 'raw' | 'both'");
+            end % if notequal typedata
+        end % func. plotonly
 
         function obj = plotozonecalc(obj)
             if isempty(obj.fixeddata)
@@ -427,6 +545,9 @@ classdef laiiqatoolbox < handle
                 elseif isequal(figaxes,'raw')
                     figobj = obj.rawfig;
                     axobj = obj.rawax;
+                elseif isequal(figaxes,'only')
+                    figobj = obj.onlyfig;
+                    axobj = obj.onlyax;
                 end
                 if contains(name,'.pdf')
                     exportgraphics(figobj,name,'ContentType','vector');
@@ -441,5 +562,29 @@ classdef laiiqatoolbox < handle
                 end
             end % if isempt. rawdata | fixeddata
         end % func. saveplot()
+
+        % function obj = signal(obj)
+        %     try
+        %         obj.signalfig.Visible = 'off';
+        %     catch
+        %         obj.signalfig = uifigure('Name','Ozonegraph','Visible','off');
+        %         obj.signalfig.Position(3) = obj.signalfig.Position(3)*1.42;
+        %         obj.signalax = uiaxes('Parent',obj.signalfig,'Position',[obj.signalfig.Position(3)*0.2818 10 obj.signalfig.Position(3)*0.70425 obj.signalfig.Position(4)-20]);
+        %     end
+        %     obj.signalax.XGrid = 'on';
+        %     obj.signalax.YGrid = 'on';
+        %     panel = uipanel('Parent',obj.signalfig,'Position',[obj.signalfig.Position(3)*0.0144 obj.signalfig.Position(3)*0.0144  obj.signalfig.Position(3)*0.255 obj.signalfig.Position(4)-20]);
+        %     label = uilabel('Parent',panel,'Text','Puerto:', 'Position',[panel.Position(1) panel.Position(4)*0.93 60 22]);
+        %     obj.dropdown = uidropdown('Parent',panel, 'Position',[panel.Position(1) panel.Position(4)*0.87 160 22]);%
+        %     obj.startButton = uibutton('state','Parent',panel,'Text','Start','Position',[panel.Position(3)*0.25 panel.Position(4)*0.50 100 22]);
+        %     obj.searchButton = uibutton('Parent',panel,'Text','Buscar','Position',[panel.Position(3)*0.25 panel.Position(4)*0.70 100 22]);
+        %     obj.startButton.ValueChangedFcn = @(o,e)startsignal(obj.startButton,obj.signalax,obj.dropdown,obj.ports);
+        %     obj.searchButton.ButtonPushedFcn = @(o,e)searchports(obj.dropdown);
+        %     % obj.gain = uispinner();
+        %     cla(obj.signalax);
+        %     obj.signalfig.Visible = 'on';
+        % end % func. signal()
     end % end of Methods
+    % methods (Access = private)
+    % end % Methods acces privated
 end % end of Class
