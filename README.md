@@ -39,7 +39,7 @@
 - Programación orientada a objetos.
 - Graficado de datos ajustados (recortados) a una concentración inicial cero (o cercana).
 - Graficado de datos originales (sin ajuste).
-- Acceso a propiedades de grafico: titulo, etiquetas de ejes ***x*** y ***y***, legenda, grosor de línea, etc.
+- Acceso a propiedades de grafico: titulo, etiquetas de ejes ***x*** y ***y***, leyenda, grosor de línea, etc.
 - Conversión de datos de tiempo del eje ***x*** : `seg`, `min`, `h`.
 - Multiselección de archivos para grafcar.
 - Acceso a variables de datos crudos (`rawdata`) y ajustados (`fixeddata`).

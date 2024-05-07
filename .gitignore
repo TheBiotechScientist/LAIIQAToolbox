@@ -18,4 +18,5 @@ signal
 arduino.m
 startsignal.m
 searchports.m
+changelog_example.txt
 
