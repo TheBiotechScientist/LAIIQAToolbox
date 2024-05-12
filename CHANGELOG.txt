@@ -1,3 +1,38 @@
+# v2.0.0 Enhancement - save method
+
+## Fixed:
+- Propiedad `fixeddata` cambiada a `fixdata` para consistencia con los nombres de variables.
+- Propiedad `ozoneresults` cambiada a `ozonedata` para consistencia con los nombres de variables.
+- 
+
+
+# v1.5.0 Enhancement
+
+## Fixed:
+
+
+## New:
+
+
+
+=============================================
+
+
+# v1.4.1 Enhancement
+
+## Fixed:
+- Conversión de unidades de ozono en los datos y en el eje ***y*** para los métodos `plotfiles` y `plotraw`.
+
+
+## New:
+- ***Método*** `plotraw` para crear el gráfico de los datos originales (sin ajuste).
+- ***Propiedad*** `rawtitle` para el título generado por el método `plotraw`.
+- ***Propiedad privada*** `data` como variable principal, dejando libre `rawdata` para su manipulación sin afectar los datos originales.
+
+
+=============================================
+
+
 # v1.3.6 Enhancement - plotozonecalc
 
 [![View LAIIQAToolbox on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://la.mathworks.com/matlabcentral/fileexchange/120218-laiiqatoolbox)
