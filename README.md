@@ -1,8 +1,7 @@
 # LAIIQAToolbox
 
-
-<!-- ![image_0.png](README_images/image_0.png) -->
-[![View LAIIQAToolbox on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://la.mathworks.com/matlabcentral/fileexchange/120218-laiiqatoolbox)
+[![View LAIIQAToolbox on File Exchange](images/matlab-file-exchange.svg)](https://la.mathworks.com/matlabcentral/fileexchange/120218-laiiqatoolbox)
+[![LAIIQA Toolbox Version](https://img.shields.io/badge/version-2.0.0-blue)](sadasd)
 
 ---
 
@@ -21,7 +20,7 @@
 # Descripción
 **Matlab®** **toolbox** para ajustar y graficar los datos de los archivos `.mat` generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.
 
-![image_1.png](README_images/image_1.png)
+![image_1.png](images/image_1.png)
 
 
 # Requerimientos de Sistema

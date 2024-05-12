@@ -4,9 +4,9 @@
     <param.authnamewatermark>Francisco Javier Morales Martínez</param.authnamewatermark>
     <param.email>fmoralesm87@gmail.com</param.email>
     <param.company>TheBiotechScientist</param.company>
-    <param.summary>Matlab toolbox para graficar archivos .mat del proceso de ozonización. LAIIQA - ESIQIE - IPN.</param.summary>
-    <param.description>Matlab toolbox para graficar y ajustar los datos de los archivos .mat generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
-    <param.screenshot>${PROJECT_ROOT}\splash.png</param.screenshot>
+    <param.summary>MATLAB® toolbox para graficar archivos .mat del proceso de ozonización. LAIIQA - ESIQIE - IPN.</param.summary>
+    <param.description>MATLAB® toolbox para graficar y ajustar los datos de los archivos .mat generados del proceso de ozonización en el Laboratorio de Investigación en Ingeniería Química Ambiental (LAIIQA) de ESIQIE - IPN.</param.description>
+    <param.screenshot>${PROJECT_ROOT}\images\splash.png</param.screenshot>
     <param.version>1.4.1</param.version>
     <param.output>${PROJECT_ROOT}\LAIIQAToolbox.mltbx</param.output>
     <param.products.name>
@@ -42,7 +42,6 @@ splash.svg
 .git
 .gitignore
 example.m
-README.md
 README_images
 version_example.mlx
 laiiqatoolboxv2.0_backup.m
@@ -68,7 +67,7 @@ changelog_example.txt</param.exclude.filters>
     <param.demosxml />
     <param.apps />
     <param.registered.apps />
-    <param.docs>${PROJECT_ROOT}\info.xml</param.docs>
+    <param.docs />
     <param.getting.started.guide>${PROJECT_ROOT}\doc\GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
@@ -99,6 +98,7 @@ changelog_example.txt</param.exclude.filters>
       <param.demosxml />
       <param.apps />
       <param.registered.apps />
+      <param.docs />
       <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
       <param.required.addons />
@@ -124,15 +124,19 @@ changelog_example.txt</param.exclude.filters>
       <file>${PROJECT_ROOT}\consumo1.png</file>
       <file>${PROJECT_ROOT}\demos.xml</file>
       <file>${PROJECT_ROOT}\doc</file>
-      <file>${PROJECT_ROOT}\info.xml</file>
+      <file>${PROJECT_ROOT}\images</file>
       <file>${PROJECT_ROOT}\laiiqatoolbox.m</file>
       <file>${PROJECT_ROOT}\only3.png</file>
       <file>${PROJECT_ROOT}\ozonograma1.pdf</file>
       <file>${PROJECT_ROOT}\ozonograma1.png</file>
+      <file>${PROJECT_ROOT}\package_toolbox.png</file>
+      <file>${PROJECT_ROOT}\png_test.png</file>
+      <file>${PROJECT_ROOT}\project_proposal.md</file>
       <file>${PROJECT_ROOT}\rawdata.png</file>
-      <file>${PROJECT_ROOT}\splash.png</file>
+      <file>${PROJECT_ROOT}\README.md</file>
       <file>${PROJECT_ROOT}\test.m</file>
       <file>${PROJECT_ROOT}\testfiles</file>
+      <file>${PROJECT_ROOT}\version_test.mlx</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded />

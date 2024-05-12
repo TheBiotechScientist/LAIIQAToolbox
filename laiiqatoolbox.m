@@ -8,21 +8,21 @@ classdef laiiqatoolbox < handle
     %   de ESIQIE - IPN.
 
     properties (Access = public)
-        rawdata;
-        fixeddata;
-        ozoneresults;
-        rawtitle; % = 'Datos sin ajustar'
-        fixedtitle; % = "Cinética de Ozonización";
-        onlytitle; % = '';
+        rawdata; % Datos originales
+        fixeddata; % Datos ajustados,fixeddata->fixeddata
+        ozonedata; % Datos de ozono
         % signaltitle;
+        rawtitle; % = 'Datos Sin Ajustar'
+        fixtitle; % = "Datos Ajustados";
+        onlytitle; % = '';
         ozonetitle;
-        ozoneUnits; % = 'g/Nm^3';
-        xlabel; % = 'min';
-        xk; % multiplicador para x
+        ozoneunits; % = 'g/Nm^3' | 'g/L'
+        xlabel; % = 'seg' | 'min' | 'h'
         xf; % valor de x final
-        ylabel; % = "Concentración [g/L]";
-        grid; % = 'on';
-        LineWidth; % = 0.5;
+        xk; % multiplicador para x
+        ylabel; % = 'Concentración [ozoneunits]';
+        grid; % = 'on' | 'off'
+        linewidth; % = 0.5;
         legend; % = '';
         legendFontSize; % = 8;
         legendLocation; % = 'best';
@@ -56,10 +56,10 @@ classdef laiiqatoolbox < handle
     methods
 
         function obj = laiiqatoolbox()
-            obj.fixedfig = figure('Visible','off');
-            obj.fixedax = axes('Parent',obj.fixedfig);
             obj.rawfig = figure('Visible','off');
             obj.rawax = axes('Parent',obj.rawfig);
+            obj.fixedfig = figure('Visible','off');
+            obj.fixedax = axes('Parent',obj.fixedfig);
             obj.ozonefig = figure('Visible','off');
             obj.ozoneax = axes('Parent',obj.ozonefig);
             obj.onlyfig = figure('Visible','off');
@@ -67,19 +67,19 @@ classdef laiiqatoolbox < handle
             % obj.signalfig = uifigure('Name','Ozonegraph','Visible','off');
             % obj.signalfig.Position(3) = obj.signalfig.Position(3)*1.42;
             % obj.signalax = uiaxes('Parent',obj.signalfig,'Position',[obj.signalfig.Position(3)*0.2818 10 obj.signalfig.Position(3)*0.70425 obj.signalfig.Position(4)-20]);
-            obj.rawtitle = "Datos sin ajustar";
-            obj.fixedtitle = "Cinética de Ozonización";
+            obj.rawtitle = "Datos Sin Ajustar";
+            obj.fixtitle = "Datos Ajustados";
+            obj.ozonetitle = "Consumo de Ozono";
             obj.onlytitle = 'default';
             % obj.signaltitle = '';
-            obj.ozonetitle = "Consumo de Ozono";
-            obj.ozoneUnits = 'g/Nm^3';
-            obj.xlabel = 'min';
-            obj.xk = {1};
+            obj.ozoneunits = 'g/Nm^3';% g/Nm^3 | g/L
+            obj.xlabel = 'seg';
             obj.xf = {'end'};
-            obj.ylabel = 'default'; % 'Concentración [ozoneUnits]'
+            obj.xk = {1};
+            obj.ylabel = 'default';% default = 'Concentración [ozoneunits]'
             obj.grid = 'on';
-            obj.LineWidth = 0.5;
-            obj.legend = {'default'}; % Nombres de archivos
+            obj.linewidth = 0.5;
+            obj.legend = {'default'};% = Nombres de archivos
             obj.legendFontSize = 8;
             obj.legendLocation = 'best';
             obj.imageResolution = 300;
@@ -101,7 +101,7 @@ classdef laiiqatoolbox < handle
                 clear obj.rawdata
                 clear obj.fixeddata
                 % clear obj.legend
-                clear obj.ozoneresults
+                clear obj.ozonedata
                 clear onj.defaultlegend
 
                 if length(string(obj.file)) == 1
@@ -128,15 +128,95 @@ classdef laiiqatoolbox < handle
             end
         end % func openfiles
 
+        function obj = plotraw(obj)
+            if isempty(obj.data)
+                disp("No se han cargado archivos para graficar o variable rawdata vacía. Ejecute openfiles primero.");
+            else
+                if isequal(obj.ozoneunits,'g/L')
+                    u = 1000;
+                elseif isequal(obj.ozoneunits,'g/Nm^3') | isequal(obj.ozoneunits,'g/m^3')
+                    u = 1;
+                else
+                    u = 0;
+                end
+                if isequal(u,0)
+                    disp('Unidades de concentración de ozono incorrectas. Opciones validas: g/L | g/Nm^3 | g/m^3');
+                else
+                    clear obj.rawdata;
+                    obj.rawdata = obj.data;
+
+                    if isequal(obj.xlabel,'min')
+                        t = 60;
+                    elseif isequal(obj.xlabel,'h')
+                        t = 3600;
+                    elseif isequal(obj.xlabel,'seg')
+                        t = 1;
+                    end
+
+                    xlabeltitle = char(sprintf("Tiempo (%s)",obj.xlabel));
+
+                    if isequal(obj.ylabel,'default')
+                        ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneunits));
+                    end
+
+                    if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend) | ~isequal(obj.legend,{}) & length(obj.legend)<length(obj.fixeddata)
+                        obj.legend = obj.defaultlegend;
+                    end
+                    try
+                        obj.rawfig.Visible = 'on';
+                    catch
+                        obj.rawfig = figure;
+                        obj.rawax = axes('Parent',obj.rawfig);
+                    end
+                    cla(obj.rawax);
+                    % obj.rawax.Parent = obj.rawfig; % = axes;
+                    hold(obj.rawax,'on');
+                    for i=1:length(obj.rawdata)
+                        obj.rawdata{i}(1,:) = obj.rawdata{i}(1,:)/t;
+                        obj.rawdata{i}(1,:) = obj.rawdata{i}(1,:)*obj.xk{i};
+                        obj.rawdata{i}(1,:) = round(obj.rawdata{i}(1,:),2);
+                        if isequal(obj.xf{i},'end')
+                            obj.rawdata{i} = obj.rawdata{i}(:,1:end);
+                        else
+                            obj.rawdata{i} = obj.rawdata{i}(:,1:find(obj.rawdata{i}(1,:)==obj.xf{i}));
+                        end
+                        obj.rawdata{i}(2,:) = obj.rawdata{i}(2,:)/u;
+                        plot(obj.rawax, obj.rawdata{i}(1,:), obj.rawdata{i}(2,:), 'linewidth', obj.linewidth);
+                    end
+                    title(obj.rawax,obj.rawtitle, 'Interpreter', obj.titleInterpreter);
+                    if isempty(obj.xlabel)
+                        xlabel(obj.rawax,'off');
+                    else
+                        xlabel(obj.rawax,'on');
+                        xlabel(obj.rawax,xlabeltitle,'Interpreter',obj.labelInterpreter);
+                    end
+                    if isempty(obj.ylabel)
+                        ylabel(obj.rawax,'off');
+                    else
+                        ylabel(obj.rawax,'on');
+                        ylabel(obj.rawax,ylabeltitle,'Interpreter',obj.labelInterpreter);
+                    end
+                    grid(obj.rawax,obj.grid);
+                    if isempty(obj.legend)
+                        legend(obj.rawax,'off');
+                    else
+                        legend(obj.rawax,'on');
+                        legend(obj.rawax,obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
+                    end
+                    hold(obj.rawax,'off');
+                end % if isequ. (u, 0)
+            end % if isempt rawdata
+        end % func. plotraw
+
         function obj = plotfixed(obj)
             clear obj.fixeddata;
             obj.fixeddata = obj.data;
             if isempty(obj.data) | isempty(obj.fixeddata)
                 disp("No se han cargado archivos para graficar o variable fixeddata vacía. Ejecute openfiles primero.");
             else
-                if isequal(obj.ozoneUnits,'g/L')
+                if isequal(obj.ozoneunits,'g/L')
                     u = 1000;
-                elseif isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
+                elseif isequal(obj.ozoneunits,'g/Nm^3') | isequal(obj.ozoneunits,'g/m^3')
                     u = 1;
                 else
                     u = 0;
@@ -155,7 +235,7 @@ classdef laiiqatoolbox < handle
                     xlabeltitle = char(sprintf("Tiempo (%s)",obj.xlabel));
 
                     if isequal(obj.ylabel,'default')
-                        ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneUnits));
+                        ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneunits));
                     end
 
                     if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend) | ~isequal(obj.legend,{}) & length(obj.legend)<length(obj.fixeddata)
@@ -185,9 +265,9 @@ classdef laiiqatoolbox < handle
                             obj.fixeddata{i} = obj.fixeddata{i}(:,1:find(obj.fixeddata{i}(1,:)==obj.xf{i}));
                         end
                         obj.fixeddata{i}(2,:) = obj.fixeddata{i}(2,:)/u;
-                        plot(obj.fixedax, obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:), 'LineWidth', obj.LineWidth);
+                        plot(obj.fixedax, obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:), 'linewidth', obj.linewidth);
                     end
-                    title(obj.fixedax,obj.fixedtitle, 'Interpreter', obj.titleInterpreter);
+                    title(obj.fixedax,obj.fixtitle, 'Interpreter', obj.titleInterpreter);
                     if isempty(obj.xlabel)
                         xlabel(obj.fixedax,'off');
                     else
@@ -212,104 +292,29 @@ classdef laiiqatoolbox < handle
             end % if isempt. fixeddata
         end % func. plotfixed
 
-        function obj = plotraw(obj)
-            if isempty(obj.data)
-                disp("No se han cargado archivos para graficar o variable rawdata vacía. Ejecute openfiles primero.");
-            else
-                if isequal(obj.ozoneUnits,'g/L')
-                    u = 1000;
-                elseif isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
-                    u = 1;
-                else
-                    u = 0;
-                end
-                if isequal(u,0)
-                    disp('Unidades de concentración de ozono incorrectas. Opciones validas: g/L | g/Nm^3 | g/m^3');
-                else
-                    clear obj.rawdata;
-                    obj.rawdata = obj.data;
-
-                    if isequal(obj.xlabel,'min')
-                        t = 60;
-                    elseif isequal(obj.xlabel,'h')
-                        t = 3600;
-                    elseif isequal(obj.xlabel,'seg')
-                        t = 1;
-                    end
-
-                    xlabeltitle = char(sprintf("Tiempo (%s)",obj.xlabel));
-
-                    if isequal(obj.ylabel,'default')
-                        ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneUnits));
-                    end
-
-                    if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend) | ~isequal(obj.legend,{}) & length(obj.legend)<length(obj.fixeddata)
-                        obj.legend = obj.defaultlegend;
-                    end
-                    try
-                        obj.rawfig.Visible = 'on';
-                    catch
-                        obj.rawfig = figure;
-                        obj.rawax = axes('Parent',obj.rawfig);
-                    end
-                    cla(obj.rawax);
-                    % obj.rawax.Parent = obj.rawfig; % = axes;
-                    hold(obj.rawax,'on');
-                    for i=1:length(obj.rawdata)
-                        obj.rawdata{i}(1,:) = obj.rawdata{i}(1,:)/t;
-                        obj.rawdata{i}(1,:) = obj.rawdata{i}(1,:)*obj.xk{i};
-                        obj.rawdata{i}(1,:) = round(obj.rawdata{i}(1,:),2);
-                        if isequal(obj.xf{i},'end')
-                            obj.rawdata{i} = obj.rawdata{i}(:,1:end);
-                        else
-                            obj.rawdata{i} = obj.rawdata{i}(:,1:find(obj.rawdata{i}(1,:)==obj.xf{i}));
-                        end
-                        obj.rawdata{i}(2,:) = obj.rawdata{i}(2,:)/u;
-                        plot(obj.rawax, obj.rawdata{i}(1,:), obj.rawdata{i}(2,:), 'LineWidth', obj.LineWidth);
-                    end
-                    title(obj.rawax,obj.rawtitle, 'Interpreter', obj.titleInterpreter);
-                    if isempty(obj.xlabel)
-                        xlabel(obj.rawax,'off');
-                    else
-                        xlabel(obj.rawax,'on');
-                        xlabel(obj.rawax,xlabeltitle,'Interpreter',obj.labelInterpreter);
-                    end
-                    if isempty(obj.ylabel)
-                        ylabel(obj.rawax,'off');
-                    else
-                        ylabel(obj.rawax,'on');
-                        ylabel(obj.rawax,ylabeltitle,'Interpreter',obj.labelInterpreter);
-                    end
-                    grid(obj.rawax,obj.grid);
-                    if isempty(obj.legend)
-                        legend(obj.rawax,'off');
-                    else
-                        legend(obj.rawax,'on');
-                        legend(obj.rawax,obj.legend,'FontSize',obj.legendFontSize,'Location',obj.legendLocation,'Interpreter',obj.legendInterpreter);
-                    end
-                    hold(obj.rawax,'off');
-                end % if isequ. (u, 0)
-            end % if isempt rawdata
-        end % func. plotraw
-
         function obj = plotonly(obj,number,typedata)
-            if ~exist('number','var')
+            arguments
+                obj;
                 number = 1;
-            end
-            if ~exist('typedata','var')
                 typedata = 'fixed';
             end
+            % if ~exist('number','var')
+            %     number = 1;
+            % end
+            % if ~exist('typedata','var')
+            %     typedata = 'fixed';
+            % end
             if isequal(typedata,'fixed') | isequal(typedata,'raw') | isequal(typedata,'both')
                 if isequal(typedata,'raw') & isempty(obj.rawdata)
-                    disp("No se ha ejecutado plotfixed o no hay datos en rawdata. Ejecute plotfixed primero.");
+                    disp("No se ha ejecutado plotraw o no hay datos en rawdata. Ejecute plotraw primero.");
                 elseif isequal(typedata,'fixed') & isempty(obj.fixeddata)
-                    disp("No se ha ejecutado openfiles o no hay datos en fixeddata. Ejecute openfiles primero.");
+                    disp("No se ha ejecutado plotfixed o no hay datos en fixeddata. Ejecute plotfixed primero.");
                 elseif isequal(typedata,'both') & isempty(obj.rawdata) | isempty(obj.fixeddata)
                     disp("No se ha ejecutado openfiles o no hay datos en rawdata y fixeddata. Ejecute openfiles primero.");
                 else
-                    if isequal(obj.ozoneUnits,'g/L')
+                    if isequal(obj.ozoneunits,'g/L')
                         u = 1000;
-                    elseif isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
+                    elseif isequal(obj.ozoneunits,'g/Nm^3') | isequal(obj.ozoneunits,'g/m^3')
                         u = 1;
                     else
                         u = 0;
@@ -318,14 +323,6 @@ classdef laiiqatoolbox < handle
                         disp('Unidades de concentración de ozono incorrectas. Opciones validas: g/L | g/Nm^3 | g/m^3');
 
                     else
-                        % if isequal(obj.xlabel,'min')
-                        %     t = 60;
-                        % elseif isequal(obj.xlabel,'h')
-                        %     t = 3600;
-                        % elseif isequal(obj.xlabel,'seg')
-                        %     t = 1;
-                        % end
-
                         if isequal(obj.onlytitle,'default') & isequal(typedata,'fixed') | isequal(typedata,'raw')
                             titleonly = char(sprintf("%sdata\\{%d\\}",typedata,number));
                         elseif isequal(obj.onlytitle,'default') & isequal(typedata,'both')
@@ -337,7 +334,7 @@ classdef laiiqatoolbox < handle
                         xlabeltitle = char(sprintf("Tiempo (%s)",obj.xlabel));
 
                         if isequal(obj.ylabel,'default')
-                            ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneUnits));
+                            ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneunits));
                         end
 
                         if isequal(obj.legend,{'default'}) | isequal(obj.legend,obj.defaultlegend) | ~isequal(obj.legend,{}) & length(obj.legend)<length(obj.fixeddata)
@@ -353,14 +350,14 @@ classdef laiiqatoolbox < handle
                         cla(obj.onlyax);
                         hold(obj.onlyax,'on');
                         if isequal(typedata,'fixed')
-                            plot(obj.onlyax,obj.fixeddata{number}(1,:),obj.fixeddata{number}(2,:), 'LineWidth', obj.LineWidth);
+                            plot(obj.onlyax,obj.fixeddata{number}(1,:),obj.fixeddata{number}(2,:), 'linewidth', obj.linewidth);
                             onlylegend = obj.legend{number};
                         elseif isequal(typedata,'raw')
-                            plot(obj.onlyax,obj.rawdata{number}(1,:),obj.rawdata{number}(2,:), 'LineWidth', obj.LineWidth);
+                            plot(obj.onlyax,obj.rawdata{number}(1,:),obj.rawdata{number}(2,:), 'linewidth', obj.linewidth);
                             onlylegend = obj.legend{number};
                         elseif isequal(typedata,'both')
-                            plot(obj.onlyax,obj.rawdata{number}(1,:),obj.rawdata{number}(2,:), 'LineWidth', obj.LineWidth);
-                            plot(obj.onlyax,obj.fixeddata{number}(1,:),obj.fixeddata{number}(2,:), 'LineWidth', obj.LineWidth);
+                            plot(obj.onlyax,obj.rawdata{number}(1,:),obj.rawdata{number}(2,:), 'linewidth', obj.linewidth);
+                            plot(obj.onlyax,obj.fixeddata{number}(1,:),obj.fixeddata{number}(2,:), 'linewidth', obj.linewidth);
                             onlylegend = {obj.legend{number} 'fixed'};
                         end
                         title(obj.onlyax,titleonly, 'Interpreter', obj.titleInterpreter);
@@ -392,99 +389,14 @@ classdef laiiqatoolbox < handle
             end % if notequal typedata
         end % func. plotonly
 
-        function obj = plotozonecalc(obj)
-            if isempty(obj.fixeddata)
-                disp('Variable fixeddata vacía. Ejecute plotfiles primero.');
-            else
-                % if isequal(obj.ozoneUnits,'g/L')
-                %     u = 1000;
-                % elseif isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
-                if isequal(obj.ozoneUnits,'g/L') | isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
-                    u = 1;
-                else
-                    u = 0;
-                end
-                if isequal(u,0)
-                    disp('Unidades incorrectas. Opciones validas: g/L | g/Nm^3 | g/m^3');
-                else
-                    ozonevars = ["Consumido","Residual","Total"];
-
-                    if isequal(obj.ylabel,'default')
-                        ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneUnits));
-                    end
-                    for i=1:length(obj.fixeddata)
-                        residual = trapz(obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:));% /u;
-                        consumed = (max(obj.fixeddata{i}(1,:))*max(obj.fixeddata{i}(2,:)))/u - residual;
-                        total = residual + consumed;
-                        if isequal(obj.xlabel,'h')
-                            var(1) = consumed*60;
-                            var(2) = residual*60;
-                            var(3) = total*60;
-                        elseif isequal(obj.xlabel,'seg')
-                            var(1) = consumed/60;
-                            var(2) = residual/60;
-                            var(3) = total/60;
-                        else
-                            var(1) = consumed;
-                            var(2) = residual;
-                            var(3) = total;
-                        end
-                        for j=1:3
-                            obj.ozoneresults{i,j} = {ozonevars(j), var(j)};
-                        end
-                    end
-                    for i=1:length(obj.fixeddata)
-                        for j=1:3
-                            y(i,j) = obj.ozoneresults{i,j}{2};
-                        end
-                        x{i} = char(obj.legend{i});
-                    end
-
-                    try
-                        obj.ozonefig.Visible = 'on';
-                    catch
-                        obj.ozonefig = figure;
-                        obj.ozoneax = axes('Parent',obj.ozonefig);
-                    end
-
-                    cla(obj.ozoneax)
-                    hold(obj.ozoneax,'on');
-                    b = bar(obj.ozoneax,categorical(x),y);
-                    if isempty(obj.ozonetitle)
-                        title(obj.ozoneax,'off');
-                    else
-                        title(obj.ozoneax,'on');
-                        title(obj.ozoneax,obj.ozonetitle,'Interpreter',obj.titleInterpreter);
-                    end
-                    legend(obj.ozoneax,ozonevars,'Location',"best");
-                    if isempty(obj.ylabel)
-                        ylabel(obj.ozoneax,'off');
-                    else
-                        ylabel(obj.ozoneax,'on');
-                        ylabel(obj.ozoneax,ylabeltitle,'Interpreter',obj.labelInterpreter);
-                    end
-                    grid(obj.ozoneax,obj.grid);
-                    ylim(obj.ozoneax,[0 max(var(3))*1.1]);
-                    xcentr = vertcat(b.XEndPoints)';
-                    if isequal(obj.ozoneUnits,'g/m^3') | isequal(obj.ozoneUnits,'g/Nm^3')
-                        value = num2str(y(:),'%.1f');
-                    else
-                        value = num2str(y(:),'%.2f');
-                    end
-                    text(obj.ozoneax,xcentr(:),y(:),value,'HorizontalAlignment','center','VerticalAlignment','bottom');
-                    hold(obj.ozoneax,'off');
-                end % if iseq. (u,0)
-            end % if isempt. fixeddata
-        end % func. plotozonecalc
-
         function obj = ozonecalc(obj)
             if isempty(obj.fixeddata)
-                disp('Variable fixeddata vacía. Ejecute plotfiles primero.');
+                disp('Variable fixeddata vacía. Ejecute plotfixed primero.');
             else
-                % if isequal(obj.ozoneUnits,'g/L')
+                % if isequal(obj.ozoneunits,'g/L')
                 %     u = 1000;
-                % elseif isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
-                if isequal(obj.ozoneUnits,'g/L') | isequal(obj.ozoneUnits,'g/Nm^3') | isequal(obj.ozoneUnits,'g/m^3')
+                % elseif isequal(obj.ozoneunits,'g/Nm^3') | isequal(obj.ozoneunits,'g/m^3')
+                if isequal(obj.ozoneunits,'g/L') | isequal(obj.ozoneunits,'g/Nm^3') | isequal(obj.ozoneunits,'g/m^3')
                     u = 1;
                 else
                     u = 0;
@@ -516,53 +428,184 @@ classdef laiiqatoolbox < handle
                             disp("Para " + obj.legend{i} + ":");
                         end
                         for j=1:2
-                            disp("    " + ozonevars(j) + ": " + var(j) + " " + string(obj.ozoneUnits));
-                            obj.ozoneresults{i,j} = {ozonevars(j), var(j)};
+                            disp("    " + ozonevars(j) + ": " + var(j) + " " + string(obj.ozoneunits));
+                            obj.ozonedata{i,j} = {ozonevars(j), var(j)};
                         end
-                        disp("    " + ozonevars(3) + ": " + var(3) + " " + string(obj.ozoneUnits) + " en " + max(obj.fixeddata{i}(1,:)) + " " + obj.xlabel);
-                        obj.ozoneresults{i,3} = {ozonevars(3), var(3)};
+                        disp("    " + ozonevars(3) + ": " + var(3) + " " + string(obj.ozoneunits) + " en " + max(obj.fixeddata{i}(1,:)) + " " + obj.xlabel);
+                        obj.ozonedata{i,3} = {ozonevars(3), var(3)};
                         disp(newline);
                     end
                 end % if iseq. (u,0)
             end % if isempt. fixeddata
         end % func. ozonecalc
 
-        function obj = saveplot(obj,name,figaxes)
-            if isempty(obj.rawdata)
-                disp("No se han cargado archivos aún. Ejecute openfiles primero.");
-            elseif isempty(obj.fixeddata)
-                disp("No se ha generado ningún gráfico. Ejecute plotfiles primero.");
+        function obj = plotozonecalc(obj)
+            if isempty(obj.fixeddata)
+                disp('Variable fixeddata vacía. Ejecute plotfixed primero.');
             else
-                if ~exist('figaxes','var')
-                    figaxes = 'fixed';
-                end
-                if isequal(figaxes,'fixed')
-                    figobj = obj.fixedfig;
-                    axobj = obj.fixedax;
-                elseif isequal(figaxes,'ozone')
-                    figobj = obj.ozonefig;
-                    axobj = obj.ozoneax;
-                elseif isequal(figaxes,'raw')
-                    figobj = obj.rawfig;
-                    axobj = obj.rawax;
-                elseif isequal(figaxes,'only')
-                    figobj = obj.onlyfig;
-                    axobj = obj.onlyax;
-                end
-                if contains(name,'.pdf')
-                    exportgraphics(figobj,name,'ContentType','vector');
-                elseif contains(name,'.png') | contains(name,'.jpg') | contains(name,'.jpeg') | contains(name,'.bmp')
-                    exportgraphics(figobj,name,'Resolution',obj.imageResolution);
-                elseif contains(name,'.fig')
-                    savefig(figobj,name);
-                elseif contains(name,'.svg') | contains(name,'.eps') | contains(name,'.tif')
-                    saveas(figobj,name);
+                if isequal(obj.ozoneunits,'g/L') | isequal(obj.ozoneunits,'g/Nm^3') | isequal(obj.ozoneunits,'g/m^3')
+                    u = 1;
                 else
-                    disp("Especifica un formato válido: .png, .jpg, .jpeg, .bmp,.pdf, .eps, .svg, .tif, .fig. Ejemplo: 'mifigura.pdf'");
+                    u = 0;
                 end
-            end % if isempt. rawdata | fixeddata
+                if isequal(u,0)
+                    disp('Unidades incorrectas. Opciones validas: g/L | g/Nm^3 | g/m^3');
+                else
+                    ozonevars = ["Consumido","Residual","Total"];
+
+                    if isequal(obj.ylabel,'default')
+                        ylabeltitle = char(sprintf("Concentración [%s]",obj.ozoneunits));
+                    end
+                    for i=1:length(obj.fixeddata)
+                        residual = trapz(obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:));% /u;
+                        consumed = (max(obj.fixeddata{i}(1,:))*max(obj.fixeddata{i}(2,:)))/u - residual;
+                        total = residual + consumed;
+                        if isequal(obj.xlabel,'h')
+                            var(1) = consumed*60;
+                            var(2) = residual*60;
+                            var(3) = total*60;
+                        elseif isequal(obj.xlabel,'seg')
+                            var(1) = consumed/60;
+                            var(2) = residual/60;
+                            var(3) = total/60;
+                        else
+                            var(1) = consumed;
+                            var(2) = residual;
+                            var(3) = total;
+                        end
+                        for j=1:3
+                            obj.ozonedata{i,j} = {ozonevars(j), var(j)};
+                        end
+                    end
+                    for i=1:length(obj.fixeddata)
+                        for j=1:3
+                            y(i,j) = obj.ozonedata{i,j}{2};
+                        end
+                        x{i} = char(obj.legend{i});
+                    end
+
+                    try
+                        obj.ozonefig.Visible = 'on';
+                    catch
+                        obj.ozonefig = figure;
+                        obj.ozoneax = axes('Parent',obj.ozonefig);
+                    end
+
+                    cla(obj.ozoneax)
+                    hold(obj.ozoneax,'on');
+                    b = bar(obj.ozoneax,categorical(x),y);
+                    if isempty(obj.ozonetitle)
+                        title(obj.ozoneax,'off');
+                    else
+                        title(obj.ozoneax,'on');
+                        title(obj.ozoneax,obj.ozonetitle,'Interpreter',obj.titleInterpreter);
+                    end
+                    legend(obj.ozoneax,ozonevars,'Location',"best");
+                    if isempty(obj.ylabel)
+                        ylabel(obj.ozoneax,'off');
+                    else
+                        ylabel(obj.ozoneax,'on');
+                        ylabel(obj.ozoneax,ylabeltitle,'Interpreter',obj.labelInterpreter);
+                    end
+                    grid(obj.ozoneax,obj.grid);
+                    ylim(obj.ozoneax,[0 max(var(3))*1.1]);
+                    xcentr = vertcat(b.XEndPoints)';
+                    if isequal(obj.ozoneunits,'g/m^3') | isequal(obj.ozoneunits,'g/Nm^3')
+                        value = num2str(y(:),'%.1f');
+                    else
+                        value = num2str(y(:),'%.2f');
+                    end
+                    text(obj.ozoneax,xcentr(:),y(:),value,'HorizontalAlignment','center','VerticalAlignment','bottom');
+                    hold(obj.ozoneax,'off');
+                end % if iseq. (u,0)
+            end % if isempt. fixeddata
+        end % func. plotozonecalc
+
+        function obj = saveplot(obj,figaxes)
+            arguments
+                obj
+                figaxes = 'fixed'
+            end
+            % if (~exist('figaxes','var'))
+            %     figaxes = 'fixed';
+            % end
+            [name,location] = uiputfile({'*.png;*.jpg;*.jpeg','Formato de Imagen (*.png, *.jpg, *.jpeg)';'*.bmp','Mapa de Bits (*.bmp)';'*.pdf','PDF (*.pdf)';'*.svg;*.eps;*.tif','Vector Graphics';'*.fig','MATLAB-Figure'},'Guardar gráfico como...');
+            if isequal(name,0) | isequal(location,0)
+                disp('No se especificó un nombre de arhivo. Acción cancelada.');
+            else
+                if isempty(obj.rawdata)
+                    disp("No hay gráficos generados aún o variable rawdata vacía. Ejecute plotraw primero.");
+                elseif isempty(obj.fixeddata)
+                    disp("No hay gráficos generados aún o variable fixeddata vacía. Ejecute plotfixed primero.");
+                else
+                    if isequal(figaxes,'fixed')
+                        figobj = obj.fixedfig;
+                        % axobj = obj.fixedax;
+                    elseif isequal(figaxes,'ozone')
+                        figobj = obj.ozonefig;
+                        % axobj = obj.ozoneax;
+                    elseif isequal(figaxes,'raw')
+                        figobj = obj.rawfig;
+                        % axobj = obj.rawax;
+                    elseif isequal(figaxes,'only')
+                        figobj = obj.onlyfig;
+                        % axobj = obj.onlyax;
+                    end
+                    if contains(name,'.pdf')
+                        exportgraphics(figobj,name,'ContentType','vector');
+                    elseif contains(name,'.png') | contains(name,'.jpg') | contains(name,'.jpeg') | contains(name,'.bmp')
+                        exportgraphics(figobj,name,'Resolution',obj.imageResolution);
+                    elseif contains(name,'.fig')
+                        savefig(figobj,name);
+                    elseif contains(name,'.svg') | contains(name,'.eps') | contains(name,'.tif')
+                        saveas(figobj,name);
+                    else
+                        disp("Especifica un formato válido: .png, .jpg, .jpeg, .bmp,.pdf, .eps, .svg, .tif, .fig. Ejemplo: 'mifigura.pdf'");
+                    end
+                    disp(['Gráfico ',name,' guardado con exito en:'])
+                    disp(location)
+                end % if isempt. rawdata | fixeddata
+            end % if isempty name | location
         end % func. saveplot()
 
+        function savedata(this)
+            % Abrimos una ventana de dialogo para obtener la ruta y el nombre del archivo:
+            [filename, location] = uiputfile({'*.mat'}, 'Guardar datos');
+            if isequal(filename,0) || isequal(location,0)
+                disp('No se especificó un nombre de arhivo. Acción cancelada.');
+            else
+                % assignin('base',erase(filename,'.mat'),'this') % Evitar usar assignin
+                % Asignamos el objeto a una estructura que tiene por nombre de variable el nombre del archivo a guardar (filename):
+                a.(erase(filename,'.mat')) = this;
+                % Guardamos el objeto con nombre de variable igual que el nombre de archivo:
+                % Esto es para evitar nombres iguales de variables al cargar archivos a matlab. Los nombres de varible de los archivos .mat guardados serán igual que los nombres de los objetos creados:
+                save([fullfile(location,filename)],'-struct','a', erase(filename,'.mat'));
+                disp(['Archivo ',name,' guardado con exito en:'])
+                disp(location)
+            end
+        end
+
+        function obj = help(obj)
+            open('doc\GettingStarted.mlx')
+        end
+
+        % ============  Work in progress... ==============
+
+        % function serialize(this,filename) %#ok<INUSL>
+        %     save([filename '.mat'],'this');
+        % end
+
+
+        % function obj = saveplotraw(obj)
+        %     if isempty(obj.rawdata)
+        %         disp("No se han cargado archivos aún. Ejecute openfiles primero.");
+        %     elseif isempty(obj.fixeddata)
+        %         disp("No se ha generado ningún gráfico aún. Ejecute plotraw o plotfixed primero.");
+        %     else
+        %         disp("Vamos bien")
+        %     end
+        % end
+        
         % function obj = signal(obj)
         %     try
         %         obj.signalfig.Visible = 'off';

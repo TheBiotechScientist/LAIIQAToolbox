@@ -1,3 +1,11 @@
+# v2.0.0 Enhancement - save method
+
+## Fixed:
+- Propiedad `fixeddata` cambiada a `fixdata` para consistencia con los nombres de variables.
+- Propiedad `ozoneresults` cambiada a `ozonedata` para consistencia con los nombres de variables.
+- 
+
+
 # v1.5.0 Enhancement
 
 ## Fixed:
