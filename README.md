@@ -5,7 +5,7 @@
 
 ---
 
-# Novedades v1.5.0
+# Novedades v2.0.0
 - ***Propiedad*** `title` cambiada a `fixedtitle` para consistencia con los nombres de variable.
 - ***Propiedad*** `ozonetitle` para el titulo del gráfico de barras de los cálculos de ozono.
 - ***Método*** `plotozonecalc` para crear gráfico de barras de los resultados de ozono consumido, residual y total para cada línea de datos.
