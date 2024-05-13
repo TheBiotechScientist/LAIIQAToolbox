@@ -1,6 +1,6 @@
 classdef laiiqatoolbox < handle
     %% LAIIQATOOLBOX script v2.0.2
-    %   Autor: F. Javier Morales Mtz.
+    %   Autor: F. Javier Morales Mtz
     %   07/05/2024
     %   Matlab toolbox para graficar y ajustar los datos de los archivos
     %   generados del proceso de ozonización en el Laboratorio
