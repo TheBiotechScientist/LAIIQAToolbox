@@ -1,11 +1,12 @@
 # LAIIQAToolbox
 
 [![View LAIIQAToolbox on File Exchange](images/matlab-file-exchange.svg)](https://la.mathworks.com/matlabcentral/fileexchange/120218-laiiqatoolbox)
-[![LAIIQA Toolbox Version](https://img.shields.io/badge/version-2.0.0-blue)](sadasd)
+[![LAIIQA Toolbox Version](https://img.shields.io/badge/version-2.0.2-blue)](verion)
 
 ---
 
-# Novedades v2.0.0
+# Novedades v2.0.2
+=======
 - ***Propiedad*** `title` cambiada a `fixedtitle` para consistencia con los nombres de variable.
 - ***Propiedad*** `ozonetitle` para el titulo del gráfico de barras de los cálculos de ozono.
 - ***Método*** `plotozonecalc` para crear gráfico de barras de los resultados de ozono consumido, residual y total para cada línea de datos.
@@ -14,7 +15,17 @@
 - ***Propiedad*** `rawtitle` para el titulo del gráfico generado por el método `plotraw`.
 - ***Método*** `plotonly` para crear gráfico individual o comparativo de datos ajustados (`fixeddata`) y sin ajustar (`rawdata`).
 - ***Propiedad*** `onlytitle` para el titulo del gráfico generado por el método `plotonly`.
+- ***Método*** `saveplot` para guardar los gráficos generados por los métodos `plotraw`, `plotfixed`, `plotonly` y `plotozonecalc`.
+- ***Método*** `savedata` para guardar los objetos creados con nombre de variable igual que nombre de arhivo.
 
+---
+
+# Cambios
+- ***Propiedad*** `fixtitle` cambiada a `fixedtitle` para consistencia con los nombres de variable.
+
+
+# Reparado
+- Error en método `savedata`. Nombres de variables de archivo no correspondian.
 ---
 
 # Descripción
@@ -36,14 +47,14 @@
 # Caracteristicas
 
 - Programación orientada a objetos.
-- Graficado de datos ajustados (recortados) a una concentración inicial cero (o cercana).
 - Graficado de datos originales (sin ajuste).
+- Graficado de datos ajustados (recortados) a una concentración inicial cero (o cercana).
 - Acceso a propiedades de grafico: titulo, etiquetas de ejes ***x*** y ***y***, leyenda, grosor de línea, etc.
 - Conversión de datos de tiempo del eje ***x*** : `seg`, `min`, `h`.
 - Multiselección de archivos para grafcar.
 - Acceso a variables de datos crudos (`rawdata`) y ajustados (`fixeddata`).
 - Cálculo de consumo de ozono.
-- Acceso a variables de consumo de ozono (`ozoneresults`).
+- Acceso a variables de consumo de ozono (`ozonedata`).
 - Guardado de grafico en varios formatos: `png`, `jpg`, `jpeg`, `pdf`, `eps`, `svg`, `tif`, `fig`.
 - Creación de varios objetos gráficos a la vez.
 - Delimitación del tiempo total final, `xf`, para cada linea de datos.
