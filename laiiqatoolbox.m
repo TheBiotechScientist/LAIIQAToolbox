@@ -1,5 +1,5 @@
 classdef laiiqatoolbox < handle
-    %% LAIIQATOOLBOX script v2.0.0
+    %% LAIIQATOOLBOX script v2.0.2
     %   Autor: F. Javier Morales Mtz.
     %   07/05/2024
     %   Matlab toolbox para graficar y ajustar los datos de los archivos
@@ -13,7 +13,7 @@ classdef laiiqatoolbox < handle
         ozonedata; % Datos de ozono
         % signaltitle;
         rawtitle; % = 'Datos Sin Ajustar'
-        fixtitle; % = "Datos Ajustados";
+        fixedtitle; % = "Datos Ajustados";
         onlytitle; % = '';
         ozonetitle;
         ozoneunits; % = 'g/Nm^3' | 'g/L'
@@ -68,12 +68,12 @@ classdef laiiqatoolbox < handle
             % obj.signalfig.Position(3) = obj.signalfig.Position(3)*1.42;
             % obj.signalax = uiaxes('Parent',obj.signalfig,'Position',[obj.signalfig.Position(3)*0.2818 10 obj.signalfig.Position(3)*0.70425 obj.signalfig.Position(4)-20]);
             obj.rawtitle = "Datos Sin Ajustar";
-            obj.fixtitle = "Datos Ajustados";
+            obj.fixedtitle = "Datos Ajustados";
             obj.ozonetitle = "Consumo de Ozono";
             obj.onlytitle = 'default';
             % obj.signaltitle = '';
             obj.ozoneunits = 'g/Nm^3';% g/Nm^3 | g/L
-            obj.xlabel = 'seg';
+            obj.xlabel = 'seg'; % = 'seg' | 'min' | 'h'
             obj.xf = {'end'};
             obj.xk = {1};
             obj.ylabel = 'default';% default = 'Concentración [ozoneunits]'
@@ -267,7 +267,7 @@ classdef laiiqatoolbox < handle
                         obj.fixeddata{i}(2,:) = obj.fixeddata{i}(2,:)/u;
                         plot(obj.fixedax, obj.fixeddata{i}(1,:), obj.fixeddata{i}(2,:), 'linewidth', obj.linewidth);
                     end
-                    title(obj.fixedax,obj.fixtitle, 'Interpreter', obj.titleInterpreter);
+                    title(obj.fixedax,obj.fixedtitle, 'Interpreter', obj.titleInterpreter);
                     if isempty(obj.xlabel)
                         xlabel(obj.fixedax,'off');
                     else
@@ -580,7 +580,7 @@ classdef laiiqatoolbox < handle
                 % Guardamos el objeto con nombre de variable igual que el nombre de archivo:
                 % Esto es para evitar nombres iguales de variables al cargar archivos a matlab. Los nombres de varible de los archivos .mat guardados serán igual que los nombres de los objetos creados:
                 save([fullfile(location,filename)],'-struct','a', erase(filename,'.mat'));
-                disp(['Archivo ',name,' guardado con exito en:'])
+                disp(['Archivo ',filename,' guardado con exito en:'])
                 disp(location)
             end
         end
